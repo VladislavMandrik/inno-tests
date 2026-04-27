@@ -1,21 +1,24 @@
-package org.example.base;
+package org.example.ui.base;
 
-import org.example.test_data.Constants;
-import org.example.manager.DriverManager;
+import org.example.pages.MainPage;
+import org.example.pages.SearchPage;
+import org.example.utils.driver.DriverManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public abstract class BaseTest {
+
     protected WebDriver driver;
-    protected WebDriverWait wait;
+
+    protected MainPage mainPage;
+    protected SearchPage searchPage;
 
     @BeforeEach
     public void setUp() {
         driver = DriverManager.getDriver();
-        wait = DriverManager.getWait();
-        driver.get(Constants.BASE_URL);
+        mainPage = new MainPage(driver);
+        searchPage = new SearchPage(driver);
     }
 
     @AfterEach
