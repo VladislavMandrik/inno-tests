@@ -2,7 +2,7 @@ package org.example.ui.smoke;
 
 import io.qameta.allure.*;
 import org.example.config.Constants;
-import org.example.ui.base.BaseTest;
+import org.example.ui.base.BaseUITest;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Tag("smoke")
 @Tag("e2e")
 @DisplayName("Smoke: Критические проверки")
-public class SmokeTests extends BaseTest {
+public class SmokeTests extends BaseUITest {
 
     @Test
     @Story("Главная страница")
@@ -30,11 +30,9 @@ public class SmokeTests extends BaseTest {
     @DisplayName("Smoke: Быстрый поиск работает")
     @Description("Smoke проверка поиска")
     public void shouldPerformQuickSearch() {
-        mainPage
-                .open()
-                .waitForPageLoaded()
-                .performSearch(Constants.TestData.SEARCH_KEYWORD);
-        assertTrue(searchPage.hasResults(), Constants.Messages.SEARCH_RESULTS_SHOULD_BE_DISPLAYED);
+        mainPage.open();
+        mainPageOperations.performSearch(Constants.TestData.SEARCH_KEYWORD);
+        assertTrue(searchPageOperations.hasResults(), Constants.Messages.SEARCH_RESULTS_SHOULD_BE_DISPLAYED);
     }
 
     @Test
