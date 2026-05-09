@@ -15,4 +15,12 @@ public abstract class BasePage {
         this.wait = new WaitHelper(driver, DriverConfig.getExplicitWaitTimeout());
         PageFactory.initElements(driver, this);
     }
+
+    public WebDriver getDriver() {
+        return driver;
+    }
+
+    public WaitHelper getWait() {
+        return wait;
+    }
 }

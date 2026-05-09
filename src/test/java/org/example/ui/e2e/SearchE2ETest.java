@@ -2,7 +2,10 @@ package org.example.ui.e2e;
 
 import io.qameta.allure.*;
 import org.example.config.Constants;
+import org.example.pages.SearchPage;
 import org.example.ui.base.BaseUITest;
+import org.example.ui.operations.MainPageOperations;
+import org.example.ui.operations.SearchPageOperations;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
@@ -15,13 +18,23 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Tag("e2e")
 @DisplayName("E2E: Поиск по сайту")
 public class SearchE2ETest extends BaseUITest {
+    private MainPageOperations mainPageOperations;
+    private SearchPageOperations searchPageOperations;
+    private SearchPage searchPage;
+
+    @BeforeEach
+    void init() {
+        mainPageOperations = new MainPageOperations(driver);
+        searchPageOperations = new SearchPageOperations(driver);
+        searchPage = new SearchPage(driver);
+    }
 
     @Test
     @Story("Успешный поиск")
     @DisplayName("E2E: Успешный поиск с валидным запросом")
     @Description("Полный сценарий поиска от главной страницы до результатов")
     public void shouldFindResultsForValidSearchQuery() {
-        mainPage.open();
+        mainPageOperations.open();
         mainPageOperations.performSearch(Constants.TestData.SEARCH_KEYWORD)
                 .waitForSearchContainer();
 
@@ -40,8 +53,8 @@ public class SearchE2ETest extends BaseUITest {
     @DisplayName("E2E: Поиск с опечаткой")
     @Description("Проверка поведения системы при поиске несуществующего слова")
     public void shouldHandleTypoInSearchQuery() {
-        mainPage.open();
-        mainPageOperations.performSearch(Constants.TestData.SEARCH_KEYWORD_TYPO);
+        mainPageOperations.open()
+                .performSearch(Constants.TestData.SEARCH_KEYWORD_TYPO);
 
         assertTrue(searchPage.waitForSearchContainerHidden(),
                 Constants.Errors.SEARCH_RESULTS_SHOULD_BE_EMPTY);

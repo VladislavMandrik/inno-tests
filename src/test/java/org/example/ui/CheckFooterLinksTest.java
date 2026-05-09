@@ -2,7 +2,7 @@ package org.example.ui;
 
 import io.qameta.allure.*;
 import org.example.config.Constants;
-import org.example.pages.MainPage;
+import org.example.ui.operations.MainPageOperations;
 import org.example.ui.base.BaseUITest;
 import org.example.utils.driver.DriverManager;
 import org.junit.jupiter.api.*;
@@ -21,10 +21,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Tag("e2e")
 @DisplayName("E2E: Проверка футера")
 public class CheckFooterLinksTest extends BaseUITest {
+    private MainPageOperations mainPageOperations;
 
     @BeforeAll
     void openPageOnce() {
-        mainPage = MainPage.openAndWait(DriverManager.getDriver());
+        mainPageOperations = new MainPageOperations(DriverManager.getDriver());
+        mainPageOperations.openAndWait();
     }
 
     @AfterEach

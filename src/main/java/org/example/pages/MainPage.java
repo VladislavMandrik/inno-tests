@@ -3,7 +3,6 @@ package org.example.pages;
 import io.qameta.allure.Step;
 import org.example.config.Constants;
 import org.example.utils.helpers.PageActionsHelper;
-import org.example.utils.helpers.WaitHelper;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -33,18 +32,9 @@ public class MainPage extends BasePage {
         super(driver);
     }
 
-    @Step("Открытие главной страницы")
-    public MainPage open() {
-        driver.get(Constants.Environment.BASE_URL + Constants.Endpoints.MAIN_PAGE);
-        PageActionsHelper.waitForPageReady(wait);
-        return this;
-    }
-
     @Step("Клик по иконке поиска")
     public MainPage clickSearchIcon() {
-        PageActionsHelper
-                .waitForClickable(wait, searchIcon)
-                .click();
+        PageActionsHelper.click(wait, searchIcon);
         return this;
     }
 
@@ -59,12 +49,6 @@ public class MainPage extends BasePage {
         PageActionsHelper
                 .waitForVisibility(wait, searchInput)
                 .sendKeys(Keys.ENTER);
-    }
-
-    @Step("Получение плейсхолдера поля поиска")
-    public String getSearchFieldPlaceholder() {
-        PageActionsHelper.waitForVisibility(wait, searchInput);
-        return searchInput.getAttribute(Constants.Attributes.PLACEHOLDER);
     }
 
     @Step("Проверка отображения логотипа")
@@ -88,20 +72,5 @@ public class MainPage extends BasePage {
         allLinks.addAll(footerLinks);
         allLinks.addAll(footerPhoneLinks);
         return allLinks;
-    }
-
-    @Step("Открытие главной страницы и ожидание загрузки")
-    public static MainPage openAndWait(WebDriver driver) {
-        return new MainPage(driver)
-                .open()
-                .waitForPageLoaded();
-    }
-
-    public WebDriver getDriver() {
-        return driver;
-    }
-
-    public WaitHelper getWait() {
-        return wait;
     }
 }

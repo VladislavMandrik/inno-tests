@@ -8,10 +8,7 @@ public final class Constants {
         throw new UnsupportedOperationException(Constants.Errors.UTILITY_CLASS_INSTANTIATION);
     }
 
-        // Timeouts
-        public static final Duration PAGE_LOAD_TIMEOUT = Duration.ofSeconds(30);
-        public static final Duration SCRIPT_TIMEOUT = Duration.ofSeconds(20);
-        public static final Duration POLLING_INTERVAL = Duration.ofMillis(200);
+    public static final Duration POLLING_INTERVAL = Duration.ofMillis(200);
 
         // Browser
         public static final String DEFAULT_BROWSER = "chrome";
@@ -152,9 +149,6 @@ public final class Constants {
 
         public static final String EXT_PNG = "png";
 
-        public static final String ATTACHMENT_URL = "Current URL";
-        public static final String ATTACHMENT_PAGE_SOURCE = "Page Source";
-        public static final String SCREENSHOT_FAILED_PREFIX = "FAILED_";
     }
 
     public static final class Paths {
@@ -182,10 +176,6 @@ public final class Constants {
         public static final class QueryParams {
             public static final String SEARCH = "s";
         }
-    }
-
-    public static final class Attributes {
-        public static final String PLACEHOLDER = "placeholder";
     }
 
     public static final class Messages {

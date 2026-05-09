@@ -3,7 +3,6 @@ package org.example.pages;
 import io.qameta.allure.Step;
 import org.example.config.Constants;
 import org.example.utils.helpers.PageActionsHelper;
-import org.example.utils.helpers.WaitHelper;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -34,22 +33,11 @@ public class SearchPage extends BasePage {
         return this;
     }
 
-    @Step("Проверка отображения контейнера результатов")
-    public boolean isSearchContainerDisplayed() {
-        return PageActionsHelper.isDisplayed(searchContainer);
-    }
-
-    @Step("Проверка пустого контейнера результатов")
-    public boolean isSearchContainerEmpty() {
-        return !PageActionsHelper.isDisplayed(searchContainer);
-    }
-
     @Step("Ожидание скрытия контейнера поиска")
     public boolean waitForSearchContainerHidden() {
         return PageActionsHelper.waitForInvisibility(wait, searchContainer);
     }
 
-    public WaitHelper getWait() { return wait; }
     public List<WebElement> getSearchResults() { return searchResults; }
     public List<WebElement> getResultsHeaders() { return resultsHeaders; }
 }

@@ -1,4 +1,4 @@
-package org.example.pages.operations;
+package org.example.ui.operations;
 
 import io.qameta.allure.Step;
 import org.example.config.Constants;
@@ -15,6 +15,15 @@ public class MainPageOperations {
 
     public MainPageOperations(WebDriver driver) {
         this.mainPage = new MainPage(driver);
+    }
+
+    @Step("Открытие главной страницы")
+    public MainPageOperations open() {
+        mainPage
+                .getDriver()
+                .get(Constants.Environment.BASE_URL + Constants.Endpoints.MAIN_PAGE);
+        PageActionsHelper.waitForPageReady(mainPage.getWait());
+        return this;
     }
 
     @Step("Выполнение поиска: {query}")
@@ -47,5 +56,12 @@ public class MainPageOperations {
         return PageActionsHelper
                 .getText(mainPage.getWait(), link)
                 .trim();
+    }
+
+    @Step("Открытие главной страницы и ожидание загрузки")
+    public MainPageOperations openAndWait() {
+        open();
+        mainPage.waitForPageLoaded();
+        return this;
     }
 }

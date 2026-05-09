@@ -1,4 +1,4 @@
-package org.example.pages.operations;
+package org.example.ui.operations;
 
 import io.qameta.allure.Step;
 import org.example.pages.SearchPage;
