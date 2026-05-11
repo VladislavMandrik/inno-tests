@@ -38,6 +38,23 @@ jobs:
           path: target/allure-report/
           retention-days: 7
 
+      - name: Send Telegram notification
+        if: always()
+        uses: appleboy/telegram-action@master
+        with:
+          to: \${{ secrets.TELEGRAM_CHAT_ID }}
+          token: \${{ secrets.TELEGRAM_TOKEN }}
+          format: html
+          message: |
+            🔔 <b>Тесты завершены!</b>
+            
+            📋 Проект: <b>InnoTests</b>
+            🌿 Ветка: <b>master</b>
+            📊 Статус: <b>\${{ job.status }}</b>
+            
+            🔗 <a href="https://github.com/VladislavMandrik/inno-tests/actions/runs/\${{ github.run_id }}">Посмотреть логи</a>
+            📈 <a href="https://vladislavmandrik.github.io/inno-tests/">Allure-отчёт</a>
+
   deploy-report:
     needs: test
     if: always()
@@ -52,5 +69,5 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: \${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./allure-report
