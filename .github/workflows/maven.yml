@@ -26,28 +26,16 @@ jobs:
       - name: Run tests
         run: mvn clean test -Dheadless=true --batch-mode
 
-      - name: Check allure-results
-        if: always()
-        run: |
-          echo "=== allure-results ==="
-          ls -la target/allure-results/ || echo "NO allure-results FOLDER"
-
       - name: Generate Allure Report
         if: always()
-        run: mvn allure:report --batch-mode || echo "allure:report FAILED"
-
-      - name: Check allure-report folder
-        if: always()
-        run: |
-          echo "=== allure-report ==="
-          ls -la target/site/allure-maven-plugin/ || echo "NO allure-report FOLDER"
+        run: mvn allure:report --batch-mode
 
       - name: Upload Allure Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
-          path: target/site/allure-maven-plugin/
+          path: target/allure-report/
           retention-days: 7
 
   deploy-report:
@@ -61,13 +49,8 @@ jobs:
           name: allure-report
           path: allure-report
 
-      - name: Check downloaded files
-        run: |
-          echo "=== downloaded ==="
-          ls -la allure-report/ || echo "EMPTY"
-
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: \${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./allure-report
