@@ -7,7 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static org.example.utils.helpers.PageActionsHelper.*;
 
 public class SearchPage extends BasePage {
 
@@ -33,43 +34,11 @@ public class SearchPage extends BasePage {
         return this;
     }
 
-    @Step("Проверка наличия результатов поиска")
-    public boolean hasResults() {
-        waitForVisibilityAll(searchResults);
-        return !searchResults.isEmpty() && searchResults.stream()
-                .anyMatch(this::isDisplayed);
-    }
-
-    @Step("Получение заголовков результатов")
-    public List<String> getResultsHeaders() {
-        waitForVisibilityAll(resultsHeaders);
-        return resultsHeaders.stream()
-                .filter(this::isDisplayed)
-                .map(this::getText)
-                .filter(text -> !text.isEmpty())
-                .limit(5)
-                .collect(Collectors.toList());
-    }
-
-    @Step("Проверка содержания ключевого слова в заголовках")
-    public boolean headersContainKeyword(String keyword) {
-        List<String> headers = getResultsHeaders();
-        return headers.stream()
-                .anyMatch(header -> header.toLowerCase().contains(keyword.toLowerCase()));
-    }
-
-    @Step("Проверка отображения контейнера результатов")
-    public boolean isSearchContainerDisplayed() {
-        return isDisplayed(searchContainer);
-    }
-
-    @Step("Проверка пустого контейнера результатов")
-    public boolean isSearchContainerEmpty() {
-        return !isDisplayed(searchContainer);
-    }
-
     @Step("Ожидание скрытия контейнера поиска")
     public boolean waitForSearchContainerHidden() {
         return waitForInvisibility(searchContainer);
     }
+
+    public List<WebElement> getSearchResults() { return searchResults; }
+    public List<WebElement> getResultsHeaders() { return resultsHeaders; }
 }
