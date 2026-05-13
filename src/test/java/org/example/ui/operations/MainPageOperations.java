@@ -4,10 +4,11 @@ import io.qameta.allure.Step;
 import org.example.config.Constants;
 import org.example.pages.MainPage;
 import org.example.pages.SearchPage;
-import org.example.utils.helpers.PageActionsHelper;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
+import static org.example.utils.helpers.PageActionsHelper.*;
 
 public class MainPageOperations {
 
@@ -22,7 +23,7 @@ public class MainPageOperations {
         mainPage
                 .getDriver()
                 .get(Constants.Environment.BASE_URL + Constants.Endpoints.MAIN_PAGE);
-        PageActionsHelper.waitForPageReady(mainPage.getWait());
+        waitForPageReady();
         return this;
     }
 
@@ -53,9 +54,7 @@ public class MainPageOperations {
             throw new NoSuchElementException(Constants.Errors.FOOTER_LINK_NOT_FOUND + href);
         }
 
-        return PageActionsHelper
-                .getText(mainPage.getWait(), link)
-                .trim();
+        return getText(link).trim();
     }
 
     @Step("Открытие главной страницы и ожидание загрузки")

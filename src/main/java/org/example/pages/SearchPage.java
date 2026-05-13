@@ -2,12 +2,13 @@ package org.example.pages;
 
 import io.qameta.allure.Step;
 import org.example.config.Constants;
-import org.example.utils.helpers.PageActionsHelper;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
+
+import static org.example.utils.helpers.PageActionsHelper.*;
 
 public class SearchPage extends BasePage {
 
@@ -29,13 +30,13 @@ public class SearchPage extends BasePage {
 
     @Step("Ожидание загрузки страницы результатов")
     public SearchPage waitForSearchContainer() {
-        PageActionsHelper.waitForVisibility(wait, searchContainer);
+        waitForVisibility(searchContainer);
         return this;
     }
 
     @Step("Ожидание скрытия контейнера поиска")
     public boolean waitForSearchContainerHidden() {
-        return PageActionsHelper.waitForInvisibility(wait, searchContainer);
+        return waitForInvisibility(searchContainer);
     }
 
     public List<WebElement> getSearchResults() { return searchResults; }

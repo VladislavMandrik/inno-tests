@@ -8,6 +8,8 @@ import org.openqa.selenium.WebDriver;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.example.utils.helpers.PageActionsHelper.*;
+
 public class SearchPageOperations {
 
     private final SearchPage searchPage;
@@ -18,10 +20,10 @@ public class SearchPageOperations {
 
     @Step("Проверка наличия результатов поиска")
     public boolean hasResults() {
-        PageActionsHelper.waitForVisibilityAll(searchPage.getWait(), searchPage.getSearchResults());
+        waitForVisibilityAll(searchPage.getSearchResults());
         return !searchPage
-                        .getSearchResults()
-                        .isEmpty()
+                .getSearchResults()
+                .isEmpty()
                 &&
                 searchPage
                         .getSearchResults()
@@ -31,12 +33,12 @@ public class SearchPageOperations {
 
     @Step("Получение заголовков результатов")
     public List<String> getResultsHeaders() {
-        PageActionsHelper.waitForVisibilityAll(searchPage.getWait(), searchPage.getResultsHeaders());
+        waitForVisibilityAll(searchPage.getResultsHeaders());
         return searchPage
                 .getResultsHeaders()
                 .stream()
                 .filter(PageActionsHelper::isDisplayed)
-                .map(e -> PageActionsHelper.getText(searchPage.getWait(), e))
+                .map(PageActionsHelper::getText)
                 .filter(text -> !text.isEmpty())
                 .limit(5)
                 .collect(Collectors.toList());

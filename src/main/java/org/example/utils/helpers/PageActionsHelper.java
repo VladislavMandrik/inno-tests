@@ -1,6 +1,7 @@
 package org.example.utils.helpers;
 
 import org.example.config.Constants;
+import org.example.config.DriverConfig;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -8,47 +9,69 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 
 public class PageActionsHelper {
+    private static final ThreadLocal<WaitHelper> waitThreadLocal = new ThreadLocal<>();
 
     private PageActionsHelper() {
         throw new UnsupportedOperationException(Constants.Errors.UTILITY_CLASS_INSTANTIATION);
     }
 
-    public static WebElement waitForVisibility(WaitHelper wait, WebElement element) {
-        return wait.waitForVisibility(element);
+    public static void init(WebDriver driver) {
+        waitThreadLocal.set(new WaitHelper(driver, DriverConfig.getExplicitWaitTimeout()));
     }
 
-    public static boolean waitForInvisibility(WaitHelper wait, WebElement element) {
-        return wait.waitForInvisibility(element);
+    public static WebElement waitForVisibility(WebElement element) {
+        return waitThreadLocal
+                .get()
+                .waitForVisibility(element);
     }
 
-    public static List<WebElement> waitForVisibilityAll(WaitHelper wait, List<WebElement> elements) {
-        return wait.waitForVisibilityAll(elements);
+    public static boolean waitForInvisibility(WebElement element) {
+        return waitThreadLocal
+                .get()
+                .waitForInvisibility(element);
     }
 
-    public static WebElement waitForClickable(WaitHelper wait, WebElement element) {
-        return wait.waitForClickable(element);
+    public static List<WebElement> waitForVisibilityAll(List<WebElement> elements) {
+        return waitThreadLocal
+                .get()
+                .waitForVisibilityAll(elements);
     }
 
-    public static void waitForPageReady(WaitHelper wait) {
-        wait.waitForPageReady();
+    public static WebElement waitForClickable(WebElement element) {
+        return waitThreadLocal
+                .get()
+                .waitForClickable(element);
     }
 
-    public static void click(WaitHelper wait, WebElement element) {
-        wait.waitForClickable(element).click();
+    public static void waitForPageReady() {
+        waitThreadLocal
+                .get()
+                .waitForPageReady();
     }
 
-    public static void clearAndSendKeys(WaitHelper wait, WebElement element, String text) {
-        waitForVisibility(wait, element);
+    public static void click(WebElement element) {
+        waitThreadLocal
+                .get()
+                .waitForClickable(element)
+                .click();
+    }
+
+    public static void clearAndSendKeys(WebElement element, String text) {
+        waitForVisibility(element);
         element.clear();
         element.sendKeys(text);
+    }
+
+    public static void sendKeys(WebElement element, CharSequence... keys) {
+        waitForVisibility(element).sendKeys(keys);
     }
 
     public static boolean isDisplayed(WebElement element) {
         return element.isDisplayed();
     }
 
-    public static String getText(WaitHelper wait, WebElement element) {
-        return waitForVisibility(wait, element).getText();
+    public static String getText(WebElement element) {
+        return waitForVisibility(element).getText();
     }
 
     public static void takeScreenshot(WebDriver driver, String name) {

@@ -2,7 +2,6 @@ package org.example.pages;
 
 import io.qameta.allure.Step;
 import org.example.config.Constants;
-import org.example.utils.helpers.PageActionsHelper;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,6 +9,8 @@ import org.openqa.selenium.support.FindBy;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.example.utils.helpers.PageActionsHelper.*;
 
 public class MainPage extends BasePage {
 
@@ -34,37 +35,36 @@ public class MainPage extends BasePage {
 
     @Step("Клик по иконке поиска")
     public MainPage clickSearchIcon() {
-        PageActionsHelper.click(wait, searchIcon);
+        click(searchIcon);
         return this;
     }
 
     @Step("Ввод поискового запроса: {query}")
     public MainPage typeSearchQuery(String query) {
-        PageActionsHelper.clearAndSendKeys(wait, searchInput, query);
+        clearAndSendKeys(searchInput, query);
         return this;
     }
 
     @Step("Нажатие Enter в поле поиска")
-    public void pressEnterInSearchField() {
-        PageActionsHelper
-                .waitForVisibility(wait, searchInput)
-                .sendKeys(Keys.ENTER);
+    public MainPage pressEnterInSearchField() {
+        sendKeys(searchInput, Keys.ENTER);
+        return this;
     }
 
     @Step("Проверка отображения логотипа")
     public boolean isLogoDisplayed() {
-        return PageActionsHelper.isDisplayed(searchLogo);
+        return isDisplayed(searchLogo);
     }
 
     @Step("Ожидание загрузки главной страницы")
     public MainPage waitForPageLoaded() {
-        PageActionsHelper.waitForVisibility(wait, searchLogo);
+        waitForVisibility(searchLogo);
         return this;
     }
 
     @Step("Проверка отображения поля поиска")
     public boolean isSearchInputDisplayed() {
-        return PageActionsHelper.isDisplayed(searchInput);
+        return isDisplayed(searchInput);
     }
 
     public List<WebElement> getAllFooterLinks() {

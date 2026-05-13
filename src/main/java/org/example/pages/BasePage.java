@@ -19,8 +19,4 @@ public abstract class BasePage {
     public WebDriver getDriver() {
         return driver;
     }
-
-    public WaitHelper getWait() {
-        return wait;
-    }
 }

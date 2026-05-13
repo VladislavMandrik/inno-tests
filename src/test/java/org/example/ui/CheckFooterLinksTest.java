@@ -5,6 +5,7 @@ import org.example.config.Constants;
 import org.example.ui.operations.MainPageOperations;
 import org.example.ui.base.BaseUITest;
 import org.example.utils.driver.DriverManager;
+import org.example.utils.helpers.PageActionsHelper;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -25,6 +26,7 @@ public class CheckFooterLinksTest extends BaseUITest {
 
     @BeforeAll
     void openPageOnce() {
+        PageActionsHelper.init(DriverManager.getDriver());
         mainPageOperations = new MainPageOperations(DriverManager.getDriver());
         mainPageOperations.openAndWait();
     }
