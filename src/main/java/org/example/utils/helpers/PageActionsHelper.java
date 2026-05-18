@@ -68,10 +68,6 @@ public class PageActionsHelper {
         element.sendKeys(text);
     }
 
-    public static void sendKeys(WebElement element, CharSequence... keys) {
-        waitForVisibility(element).sendKeys(keys);
-    }
-
     public static boolean isDisplayed(WebElement element) {
         return element.isDisplayed();
     }

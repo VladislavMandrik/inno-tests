@@ -35,6 +35,11 @@ public class MainPageOperations {
         return new SearchPage(mainPage.getDriver());
     }
 
+    @Step("Клик по иконке поиска")
+    public void clickSearchIcon() {
+        mainPage.clickSearchIcon();
+    }
+
     @Step("Поиск ссылки в футере по href: {href}")
     public WebElement getFooterLink(String href) {
         return mainPage.getAllFooterLinks().stream()

@@ -33,7 +33,6 @@ public class MainPage extends BasePage {
         super(driver);
     }
 
-    @Step("Клик по иконке поиска")
     public MainPage clickSearchIcon() {
         click(searchIcon);
         return this;
@@ -47,7 +46,8 @@ public class MainPage extends BasePage {
 
     @Step("Нажатие Enter в поле поиска")
     public MainPage pressEnterInSearchField() {
-        sendKeys(searchInput, Keys.ENTER);
+        WebElement element = waitForVisibility(searchInput);
+        element.sendKeys(Keys.ENTER);
         return this;
     }
 

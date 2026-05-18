@@ -32,8 +32,7 @@ public class SmokeTests extends BaseUITest {
     @DisplayName("Smoke: Главная страница загружается")
     @Description("Проверка доступности главной страницы")
     public void shouldLoadMainPage() {
-        mainPageOperations
-                .openAndWait();
+        mainPageOperations.openAndWait();
         assertTrue(mainPage.isLogoDisplayed(), Constants.Messages.LOGO_SHOULD_BE_DISPLAYED);
     }
 
@@ -53,8 +52,9 @@ public class SmokeTests extends BaseUITest {
     @DisplayName("Smoke: Иконка поиска кликабельна")
     @Description("Проверка доступности иконки поиска")
     void shouldHaveClickableSearchIcon() {
-        mainPageOperations.openAndWait();
-        mainPage.clickSearchIcon();
+        mainPageOperations
+                .openAndWait()
+                .clickSearchIcon();
         assertTrue(mainPage.isSearchInputDisplayed(), Constants.Messages.SEARCH_INPUT_SHOULD_BE_DISPLAYED);
     }
 }

@@ -54,7 +54,8 @@ public class SearchE2ETest extends BaseUITest {
     @DisplayName("E2E: Поиск с опечаткой")
     @Description("Проверка поведения системы при поиске несуществующего слова")
     public void shouldHandleTypoInSearchQuery() {
-        mainPageOperations.open()
+        mainPageOperations
+                .open()
                 .performSearch(Constants.TestData.SEARCH_KEYWORD_TYPO);
 
         assertTrue(searchPage.waitForSearchContainerHidden(),

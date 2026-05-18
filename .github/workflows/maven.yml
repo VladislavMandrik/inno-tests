@@ -29,10 +29,8 @@ jobs:
         id: tests
         run: |
           mvn clean test -Dheadless=true --batch-mode | tee test-output.log
-          echo "tests_passed=$(grep -oP 'Tests run: \K[0-9]+' test-output.log | head -1)" >> $GITHUB_OUTPUT
-          echo "tests_failed=$(grep -oP 'Failures: \K[0-9]+' test-output.log | head -1)" >> $GITHUB_OUTPUT
-          echo "tests_errors=$(grep -oP 'Errors: \K[0-9]+' test-output.log | head -1)" >> $GITHUB_OUTPUT
-          echo "tests_skipped=$(grep -oP 'Skipped: \K[0-9]+' test-output.log | head -1)" >> $GITHUB_OUTPUT
+          echo "tests_passed=$(grep 'Tests run:' target/surefire-reports/*.txt | awk '{sum+=$3} END {print sum}')" >> $GITHUB_OUTPUT
+          echo "tests_failed=$(grep 'Failures:' target/surefire-reports/*.txt | awk '{sum+=$3} END {print sum}')" >> $GITHUB_OUTPUT
 
       - name: Generate Allure Report
         if: always()
@@ -64,8 +62,6 @@ jobs:
             🧪 <b>Результаты тестов:</b>
             ✅ Успешно: ${{ steps.tests.outputs.tests_passed }}
             ❌ Упало: ${{ steps.tests.outputs.tests_failed }}
-            ⚠️ Ошибок: ${{ steps.tests.outputs.tests_errors }}
-            ⏭ Пропущено: ${{ steps.tests.outputs.tests_skipped }}
             
             📝 <b>Коммит:</b> ${{ github.event.head_commit.message }}
             
