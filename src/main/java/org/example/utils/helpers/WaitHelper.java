@@ -40,6 +40,10 @@ public class WaitHelper {
         return wait.until(ExpectedConditions.invisibilityOf(element));
     }
 
+    public boolean waitForInvisibilityAll(List<WebElement> elements) {
+        return wait.until(ExpectedConditions.invisibilityOfAllElements(elements));
+    }
+
     public boolean waitForPageReady() {
         return wait.until(driver -> {
             JavascriptExecutor js = (JavascriptExecutor) driver;

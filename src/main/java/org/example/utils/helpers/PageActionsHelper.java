@@ -37,6 +37,12 @@ public class PageActionsHelper {
                 .waitForVisibilityAll(elements);
     }
 
+    public static boolean waitForInvisibilityAll(List<WebElement> elements) {
+        return waitThreadLocal
+                .get()
+                .waitForInvisibilityAll(elements);
+    }
+
     public static WebElement waitForClickable(WebElement element) {
         return waitThreadLocal
                 .get()

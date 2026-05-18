@@ -34,8 +34,9 @@ public class SearchE2ETest extends BaseUITest {
     @DisplayName("E2E: Успешный поиск с валидным запросом")
     @Description("Полный сценарий поиска от главной страницы до результатов")
     public void shouldFindResultsForValidSearchQuery() {
-        mainPageOperations.open();
-        mainPageOperations.performSearch(Constants.TestData.SEARCH_KEYWORD)
+        mainPageOperations
+                .open()
+                .performSearch(Constants.TestData.SEARCH_KEYWORD)
                 .waitForSearchContainer();
 
         assertTrue(searchPageOperations.hasResults(), Constants.Messages.SEARCH_RESULTS_SHOULD_BE_DISPLAYED);

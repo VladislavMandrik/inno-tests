@@ -3,6 +3,8 @@ package org.example.utils.driver;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.example.config.Constants;
 import org.example.config.DriverConfig;
+import org.example.utils.proxy.ProxyManager;
+import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -61,6 +63,20 @@ public final class BrowserFactory {
 
     private static ChromeOptions getChromeOptions() {
         ChromeOptions options = new ChromeOptions();
+
+        if ("true".equals(System.getProperty("proxy.enabled"))) {
+            Proxy seleniumProxy = ProxyManager.getSeleniumProxy();
+            options.setProxy(seleniumProxy);
+
+            try {
+                options.setAcceptInsecureCerts(true);
+            } catch (Throwable ignored) {
+                options.setCapability("acceptInsecureCerts", true);
+            }
+
+            options.addArguments("--ignore-certificate-errors");
+            options.addArguments("--proxy-bypass-list=<-loopback>");
+        }
 
         options.addArguments(
                 Constants.BrowserArgs.NO_SANDBOX,

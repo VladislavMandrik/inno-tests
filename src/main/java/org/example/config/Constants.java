@@ -93,12 +93,15 @@ public final class Constants {
         public static final String SEARCH_RESULTS_TITLE = ".search-result";
         public static final String SEARCH_RESULTS_HEADERS = ".article-search .entry-title a";
         public static final String FOOTER_ABOUT_US_LINK = ".grid-column-footer-menu > div:nth-child(4) a";
+        public static final String AJAX_URL_PATTERN = "admin-ajax.php";
+        public static final String AJAX_ACTION = "alm_get_posts";
         public static final String FOOTER_PHONE_LINKS = ".grid-column-footer a[href^='tel:']";
     }
 
     public static final class TestData {
         public static final String SEARCH_KEYWORD = "test";
         public static final String SEARCH_KEYWORD_TYPO = "vbfbfg";
+        public static final String AJAX_EMPTY_RESPONSE = "{\"html\":\"\",\"meta\":{\"postcount\":0}}";
         public static final String SEARCH_PATTERN = "property=\"og:title\" content=\"You searched for : %s - Innowise\"";
 
         // Ожидаемые тексты на странице поиска
@@ -128,8 +131,9 @@ public final class Constants {
         public static final String SEARCH_ICON_NOT_CLICKABLE = "Иконка поиска не кликабельна";
         public static final String PLACEHOLDER_MISMATCH = "Ожидался placeholder '%s', но получен '%s'";
         public static final String CONTENT_HEADERS_MISMATCH = "Ни один из %d заголовков не содержит '%s': %s";
-        public static final String SEARCH_RESULTS_SHOULD_BE_EMPTY = "Результаты поиска не должны отображаться для несуществующего слова";
+        public static final String SEARCH_RESULTS_SHOULD_BE_EMPTY = "Результаты поиска не должны отображаться";
         public static final String FOOTER_LINK_NOT_FOUND = "Ссылка не найдена в футере: %s";
+        public static final String PROXY_NOT_STARTED = "Proxy is not started. Call ProxyManager.start() first.";
 
         // 404 Page
         public static final String TITLE_404 = "Страница не найдена - Innowise";
@@ -182,6 +186,8 @@ public final class Constants {
         public static final String LOGO_SHOULD_BE_DISPLAYED = "Логотип должен отображаться на главной странице";
         public static final String SEARCH_RESULTS_SHOULD_BE_DISPLAYED = "Результаты поиска должны отображаться";
         public static final String SEARCH_INPUT_SHOULD_BE_DISPLAYED = "Поле поиска должно отображаться после клика на иконку";
+        public static final String SEARCH_CONTAINER_SHOULD_BE_DISPLAYED = "Контейнер поиска должен отображаться";
+        public static final String AJAX_INTERCEPTED = "✅ BrowserMob Proxy перехватил AJAX";
         public static final String FOOTER_LINK_TEXT_MISMATCH = "Ожидался текст '%s' для ссылки '%s'";
     }
 
@@ -195,6 +201,7 @@ public final class Constants {
         public static final String HEADLESS = "headless";
         public static final String BROWSER_WIDTH = "browser.width";
         public static final String BROWSER_HEIGHT = "browser.height";
+        public static final String PROXY_ENABLED = "proxy.enabled";
 
         // Timeouts
         public static final String TIMEOUT_EXPLICIT = "timeout.explicit";

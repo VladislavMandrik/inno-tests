@@ -26,7 +26,13 @@ jobs:
           sudo apt-get install -y -qq ./google-chrome-stable_current_amd64.deb
 
       - name: Run tests
-        run: mvn clean test -Dheadless=true --batch-mode
+        id: tests
+        run: |
+          mvn clean test -Dheadless=true --batch-mode | tee test-output.log
+          echo "tests_passed=$(grep -oP 'Tests run: \K[0-9]+' test-output.log | head -1)" >> $GITHUB_OUTPUT
+          echo "tests_failed=$(grep -oP 'Failures: \K[0-9]+' test-output.log | head -1)" >> $GITHUB_OUTPUT
+          echo "tests_errors=$(grep -oP 'Errors: \K[0-9]+' test-output.log | head -1)" >> $GITHUB_OUTPUT
+          echo "tests_skipped=$(grep -oP 'Skipped: \K[0-9]+' test-output.log | head -1)" >> $GITHUB_OUTPUT
 
       - name: Generate Allure Report
         if: always()
@@ -50,12 +56,21 @@ jobs:
           message: |
             🔔 <b>Тесты завершены!</b>
             
-            📋 Проект: <b>InnoTests</b>
-            🌿 Ветка: <b>${{ github.ref_name }}</b>
-            📊 Статус: <b>${{ job.status }}</b>
+            📋 <b>Проект:</b> ${{ github.repository }}
+            🌿 <b>Ветка:</b> ${{ github.ref_name }}
+            👤 <b>Автор:</b> ${{ github.actor }}
+            📊 <b>Статус:</b> ${{ job.status }}
             
-            🔗 <a href="https://github.com/VladislavMandrik/inno-tests/actions/runs/${{ github.run_id }}">Посмотреть логи</a>
-            📈 <a href="https://vladislavmandrik.github.io/inno-tests/">Allure-отчёт</a>
+            🧪 <b>Результаты тестов:</b>
+            ✅ Успешно: ${{ steps.tests.outputs.tests_passed }}
+            ❌ Упало: ${{ steps.tests.outputs.tests_failed }}
+            ⚠️ Ошибок: ${{ steps.tests.outputs.tests_errors }}
+            ⏭ Пропущено: ${{ steps.tests.outputs.tests_skipped }}
+            
+            📝 <b>Коммит:</b> ${{ github.event.head_commit.message }}
+            
+            <a href="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}">📋 Логи сборки</a>
+            <a href="https://vladislavmandrik.github.io/inno-tests/">📈 Allure-отчёт</a>
 
   deploy-report:
     needs: test

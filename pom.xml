@@ -25,12 +25,14 @@
         <rest-assured.version>5.5.0</rest-assured.version>
         <junit.version>5.11.4</junit.version>
         <webdrivermanager.version>5.9.2</webdrivermanager.version>
+        <browsermob.version>2.1.5</browsermob.version>
 
         <!-- Параллельное выполнение -->
         <parallel.threads>4</parallel.threads>
         <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
         <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
-        <junit.jupiter.execution.parallel.mode.classes.default>concurrent</junit.jupiter.execution.parallel.mode.classes.default>
+        <junit.jupiter.execution.parallel.mode.classes.default>concurrent
+        </junit.jupiter.execution.parallel.mode.classes.default>
     </properties>
 
     <dependencyManagement>
@@ -46,6 +48,22 @@
     </dependencyManagement>
 
     <dependencies>
+
+        <!-- WireMock -->
+        <dependency>
+            <groupId>org.wiremock</groupId>
+            <artifactId>wiremock</artifactId>
+            <version>3.13.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- BrowserMob Proxy (для тестов, MITM/перехват трафика) -->
+        <dependency>
+            <groupId>net.lightbody.bmp</groupId>
+            <artifactId>browsermob-core</artifactId>
+            <version>2.1.5</version>
+        </dependency>
+
         <!-- SELENIUM -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
@@ -53,6 +71,7 @@
             <version>${selenium.version}</version>
         </dependency>
 
+        <!-- WebDriverManager -->
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
@@ -159,9 +178,14 @@
                     </argLine>
                     <systemPropertyVariables>
                         <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
-                        <junit.jupiter.execution.parallel.enabled>${junit.jupiter.execution.parallel.enabled}</junit.jupiter.execution.parallel.enabled>
-                        <junit.jupiter.execution.parallel.mode.default>${junit.jupiter.execution.parallel.mode.default}</junit.jupiter.execution.parallel.mode.default>
-                        <junit.jupiter.execution.parallel.mode.classes.default>${junit.jupiter.execution.parallel.mode.classes.default}</junit.jupiter.execution.parallel.mode.classes.default>
+                        <junit.jupiter.execution.parallel.enabled>${junit.jupiter.execution.parallel.enabled}
+                        </junit.jupiter.execution.parallel.enabled>
+                        <junit.jupiter.execution.parallel.mode.default>
+                            ${junit.jupiter.execution.parallel.mode.default}
+                        </junit.jupiter.execution.parallel.mode.default>
+                        <junit.jupiter.execution.parallel.mode.classes.default>
+                            ${junit.jupiter.execution.parallel.mode.classes.default}
+                        </junit.jupiter.execution.parallel.mode.classes.default>
                     </systemPropertyVariables>
                     <includes>
                         <include>**/*Test.java</include>

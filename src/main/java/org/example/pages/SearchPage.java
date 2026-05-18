@@ -39,6 +39,11 @@ public class SearchPage extends BasePage {
         return waitForInvisibility(searchContainer);
     }
 
+    @Step("Ожидание скрытия результатов поиска")
+    public boolean waitForSearchResultsHidden() {
+        return waitForInvisibilityAll(searchResults);
+    }
+
     public List<WebElement> getSearchResults() { return searchResults; }
     public List<WebElement> getResultsHeaders() { return resultsHeaders; }
 }
