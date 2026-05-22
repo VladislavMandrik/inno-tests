@@ -68,4 +68,11 @@ public class MainPageOperations {
         mainPage.waitForPageLoaded();
         return this;
     }
+
+    @Step("Скролл страницы на {pixels}px")
+    public MainPageOperations scrollPage(int pixels) {
+        scrollBy(mainPage.getDriver(), pixels);
+        waitForScrollAt(pixels);
+        return this;
+    }
 }

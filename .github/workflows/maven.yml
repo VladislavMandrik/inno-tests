@@ -29,8 +29,10 @@ jobs:
         id: tests
         run: |
           mvn clean test -Dheadless=true --batch-mode | tee test-output.log
-          echo "tests_passed=$(grep 'Tests run:' target/surefire-reports/*.txt | awk '{sum+=$3} END {print sum}')" >> $GITHUB_OUTPUT
-          echo "tests_failed=$(grep 'Failures:' target/surefire-reports/*.txt | awk '{sum+=$3} END {print sum}')" >> $GITHUB_OUTPUT
+          echo "tests_passed=$(grep -oP 'Tests run: \K\d+' test-output.log | tail -1)" >> $GITHUB_OUTPUT
+          echo "tests_failed=$(grep -oP 'Failures: \K\d+' test-output.log | tail -1)" >> $GITHUB_OUTPUT
+          echo "tests_errors=$(grep -oP 'Errors: \K\d+' test-output.log | tail -1)" >> $GITHUB_OUTPUT
+          echo "tests_skipped=$(grep -oP 'Skipped: \K\d+' test-output.log | tail -1)" >> $GITHUB_OUTPUT
 
       - name: Generate Allure Report
         if: always()

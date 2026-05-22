@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.function.Function;
 
 public class WaitHelper {
     private final WebDriverWait wait;
@@ -53,5 +54,9 @@ public class WaitHelper {
 
     public void waitForPageFullyLoaded() {
         waitForPageReady();
+    }
+
+    public boolean until(Function<WebDriver, Boolean> condition) {
+        return wait.until(condition);
     }
 }

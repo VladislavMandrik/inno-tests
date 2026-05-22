@@ -29,6 +29,9 @@ public class MainPage extends BasePage {
     @FindBy(css = Constants.Selectors.FOOTER_PHONE_LINKS)
     private List<WebElement> footerPhoneLinks;
 
+    @FindBy(css = Constants.Selectors.MOBILE_MENU)
+    private WebElement mobileMenu;
+
     public MainPage(WebDriver driver) {
         super(driver);
     }
@@ -54,6 +57,11 @@ public class MainPage extends BasePage {
     @Step("Проверка отображения логотипа")
     public boolean isLogoDisplayed() {
         return isDisplayed(searchLogo);
+    }
+
+    @Step("Проверка отображения меню")
+    public boolean isMenuDisplayed() {
+        return isDisplayed(mobileMenu);
     }
 
     @Step("Ожидание загрузки главной страницы")

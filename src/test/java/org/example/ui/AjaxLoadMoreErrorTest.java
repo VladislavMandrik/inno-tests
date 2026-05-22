@@ -16,7 +16,7 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Epic("E2E Tests")
-@Feature("AJAX Load More in search")
+@Feature("AJAX Load More в поиске")
 @Tag("e2e")
 @DisplayName("E2E: Обработка ошибок AJAX через BrowserMob Proxy при поиске на странице")
 public class AjaxLoadMoreErrorTest extends BaseUITest {

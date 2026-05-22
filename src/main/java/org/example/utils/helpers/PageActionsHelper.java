@@ -99,4 +99,19 @@ public class PageActionsHelper {
     public static void scrollToBottom(WebDriver driver) {
         executeScript(driver, Constants.JS.SCROLL_TO_BOTTOM);
     }
+
+    public static void scrollBy(WebDriver driver, int pixels) {
+        executeScript(driver, String.format("window.scrollBy(0, %d);", pixels));
+    }
+
+    public static long getScrollPosition(WebDriver driver) {
+        Object result = executeScript(driver, Constants.JS.SCROLL_POSITION);
+        return ((Number) result).longValue();
+    }
+
+    public static boolean waitForScrollAt(int expectedPosition) {
+        return waitThreadLocal
+                .get()
+                .until(d -> getScrollPosition(d) == expectedPosition);
+    }
 }

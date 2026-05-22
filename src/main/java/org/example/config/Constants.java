@@ -96,6 +96,7 @@ public final class Constants {
         public static final String AJAX_URL_PATTERN = "admin-ajax.php";
         public static final String AJAX_ACTION = "alm_get_posts";
         public static final String FOOTER_PHONE_LINKS = ".grid-column-footer a[href^='tel:']";
+        public static final String MOBILE_MENU = ".new-menu-in";
     }
 
     public static final class TestData {
@@ -171,6 +172,8 @@ public final class Constants {
         public static final String SCROLL_INTO_VIEW = "arguments[0].scrollIntoView(true);";
         public static final String SCROLL_TO_TOP = "window.scrollTo(0, 0);";
         public static final String SCROLL_TO_BOTTOM = "window.scrollTo(0, document.body.scrollHeight);";
+        public static final String SCROLL_POSITION = "return window.scrollY;";
+
     }
 
     public static final class Api {
@@ -189,6 +192,8 @@ public final class Constants {
         public static final String SEARCH_CONTAINER_SHOULD_BE_DISPLAYED = "Контейнер поиска должен отображаться";
         public static final String AJAX_INTERCEPTED = "✅ BrowserMob Proxy перехватил AJAX";
         public static final String FOOTER_LINK_TEXT_MISMATCH = "Ожидался текст '%s' для ссылки '%s'";
+        public static final String HEADER_SHOULD_BE_VISIBLE_AT_START = "Хедер должен быть виден в начале";
+        public static final String HEADER_SHOULD_BE_VISIBLE_AFTER_SCROLL = "Хедер должен быть виден после скролла";
     }
 
     public static final class Content {
