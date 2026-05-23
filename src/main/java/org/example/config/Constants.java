@@ -173,6 +173,8 @@ public final class Constants {
         public static final String SCROLL_TO_TOP = "window.scrollTo(0, 0);";
         public static final String SCROLL_TO_BOTTOM = "window.scrollTo(0, document.body.scrollHeight);";
         public static final String SCROLL_POSITION = "return window.scrollY;";
+        public static final String WINDOW_INNER_HEIGHT = "return window.innerHeight;";
+        public static final String BODY_SCROLL_HEIGHT = "return document.body.scrollHeight;";
 
     }
 

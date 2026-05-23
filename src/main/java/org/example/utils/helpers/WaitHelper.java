@@ -8,7 +8,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.function.Function;
 
 public class WaitHelper {
     private final WebDriverWait wait;
@@ -56,7 +55,10 @@ public class WaitHelper {
         waitForPageReady();
     }
 
-    public boolean until(Function<WebDriver, Boolean> condition) {
-        return wait.until(condition);
+    public boolean waitForScroll(long expectedPosition) {
+        return wait.until(driver -> {
+            Object result = ((JavascriptExecutor) driver).executeScript(Constants.JS.SCROLL_POSITION);
+            return ((Number) result).longValue() == expectedPosition;
+        });
     }
 }

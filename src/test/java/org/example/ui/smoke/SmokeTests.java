@@ -42,7 +42,7 @@ public class SmokeTests extends BaseUITest {
     @Description("Smoke проверка поиска")
     public void shouldPerformQuickSearch() {
         mainPageOperations
-                .open()
+                .openAndWait()
                 .performSearch(Constants.TestData.SEARCH_KEYWORD);
         assertTrue(searchPageOperations.hasResults(), Constants.Messages.SEARCH_RESULTS_SHOULD_BE_DISPLAYED);
     }

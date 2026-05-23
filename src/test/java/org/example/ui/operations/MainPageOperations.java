@@ -58,7 +58,6 @@ public class MainPageOperations {
         if (link == null) {
             throw new NoSuchElementException(Constants.Errors.FOOTER_LINK_NOT_FOUND + href);
         }
-
         return getText(link).trim();
     }
 

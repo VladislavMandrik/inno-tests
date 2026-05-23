@@ -35,7 +35,7 @@ public class SearchE2ETest extends BaseUITest {
     @Description("Полный сценарий поиска от главной страницы до результатов")
     public void shouldFindResultsForValidSearchQuery() {
         mainPageOperations
-                .open()
+                .openAndWait()
                 .performSearch(Constants.TestData.SEARCH_KEYWORD)
                 .waitForSearchContainer();
 
@@ -55,7 +55,7 @@ public class SearchE2ETest extends BaseUITest {
     @Description("Проверка поведения системы при поиске несуществующего слова")
     public void shouldHandleTypoInSearchQuery() {
         mainPageOperations
-                .open()
+                .openAndWait()
                 .performSearch(Constants.TestData.SEARCH_KEYWORD_TYPO);
 
         assertTrue(searchPage.waitForSearchContainerHidden(),

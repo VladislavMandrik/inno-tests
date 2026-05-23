@@ -60,7 +60,7 @@ public class AjaxLoadMoreErrorTest extends BaseUITest {
     void shouldHandleAjax400Error() {
 
         mainPageOperations
-                .open()
+                .openAndWait()
                 .performSearch(Constants.TestData.SEARCH_KEYWORD)
                 .waitForSearchContainer();
 
