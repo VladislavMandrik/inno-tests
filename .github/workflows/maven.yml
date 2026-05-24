@@ -64,6 +64,8 @@ jobs:
             🧪 <b>Результаты тестов:</b>
             ✅ Успешно: ${{ steps.tests.outputs.tests_passed }}
             ❌ Упало: ${{ steps.tests.outputs.tests_failed }}
+            ⚠️ Ошибок: ${{ steps.tests.outputs.tests_errors }}
+            ⏭️ Пропущено: ${{ steps.tests.outputs.tests_skipped }}
             
             📝 <b>Коммит:</b> ${{ github.event.head_commit.message }}
             
