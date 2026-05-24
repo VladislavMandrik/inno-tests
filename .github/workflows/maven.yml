@@ -8,7 +8,26 @@ on:
   workflow_dispatch:
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Checkstyle
+        run: mvn checkstyle:check --batch-mode || true
+
+      - name: PMD
+        run: mvn pmd:check --batch-mode || true
+
   test:
+    needs: lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,10 +48,17 @@ jobs:
         id: tests
         run: |
           mvn clean test -Dheadless=true --batch-mode | tee test-output.log
-          echo "tests_passed=$(grep -oP 'Tests run: \K\d+' test-output.log | tail -1)" >> $GITHUB_OUTPUT
-          echo "tests_failed=$(grep -oP 'Failures: \K\d+' test-output.log | tail -1)" >> $GITHUB_OUTPUT
-          echo "tests_errors=$(grep -oP 'Errors: \K\d+' test-output.log | tail -1)" >> $GITHUB_OUTPUT
-          echo "tests_skipped=$(grep -oP 'Skipped: \K\d+' test-output.log | tail -1)" >> $GITHUB_OUTPUT
+          TOTAL=$(grep -oP 'Tests run: \K\d+' test-output.log | tail -1)
+          FAILURES=$(grep -oP 'Failures: \K\d+' test-output.log | tail -1)
+          ERRORS=$(grep -oP 'Errors: \K\d+' test-output.log | tail -1)
+          SKIPPED=$(grep -oP 'Skipped: \K\d+' test-output.log | tail -1)
+          PASSED=$((TOTAL - FAILURES - ERRORS - SKIPPED))
+          
+          echo "tests_total=$TOTAL" >> $GITHUB_OUTPUT
+          echo "tests_passed=$PASSED" >> $GITHUB_OUTPUT
+          echo "tests_failed=$FAILURES" >> $GITHUB_OUTPUT
+          echo "tests_errors=$ERRORS" >> $GITHUB_OUTPUT
+          echo "tests_skipped=$SKIPPED" >> $GITHUB_OUTPUT
 
       - name: Generate Allure Report
         if: always()
@@ -62,7 +88,8 @@ jobs:
             📊 <b>Статус:</b> ${{ job.status }}
             
             🧪 <b>Результаты тестов:</b>
-            ✅ Успешно: ${{ steps.tests.outputs.tests_passed }}
+            📊 Всего: ${{ steps.tests.outputs.tests_total }}
+            ✅ Прошло: ${{ steps.tests.outputs.tests_passed }}
             ❌ Упало: ${{ steps.tests.outputs.tests_failed }}
             ⚠️ Ошибок: ${{ steps.tests.outputs.tests_errors }}
             ⏭️ Пропущено: ${{ steps.tests.outputs.tests_skipped }}
