@@ -2,64 +2,70 @@ package org.example.utils.helpers;
 
 import org.example.config.Constants;
 import org.example.config.DriverConfig;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
 public class PageActionsHelper {
-    private static final ThreadLocal<WaitHelper> waitThreadLocal = new ThreadLocal<>();
+    private static final ThreadLocal<WebDriverWait> waitThreadLocal = new ThreadLocal<>();
 
     private PageActionsHelper() {
         throw new UnsupportedOperationException(Constants.Errors.UTILITY_CLASS_INSTANTIATION);
     }
 
     public static void init(WebDriver driver) {
-        waitThreadLocal.set(new WaitHelper(driver, DriverConfig.getExplicitWaitTimeout()));
+        WebDriverWait wait = new WebDriverWait(driver, DriverConfig.getExplicitWaitTimeout(), Constants.POLLING_INTERVAL);
+        wait.ignoring(StaleElementReferenceException.class)
+                .ignoring(NoSuchElementException.class);
+        waitThreadLocal.set(wait);
+    }
+
+    private static WebDriverWait getWait() {
+        return waitThreadLocal.get();
     }
 
     public static WebElement waitForVisibility(WebElement element) {
-        return waitThreadLocal
-                .get()
-                .waitForVisibility(element);
-    }
-
-    public static boolean waitForInvisibility(WebElement element) {
-        return waitThreadLocal
-                .get()
-                .waitForInvisibility(element);
+        return getWait().until(ExpectedConditions.visibilityOf(element));
     }
 
     public static List<WebElement> waitForVisibilityAll(List<WebElement> elements) {
-        return waitThreadLocal
-                .get()
-                .waitForVisibilityAll(elements);
-    }
-
-    public static boolean waitForInvisibilityAll(List<WebElement> elements) {
-        return waitThreadLocal
-                .get()
-                .waitForInvisibilityAll(elements);
+        return getWait().until(ExpectedConditions.visibilityOfAllElements(elements));
     }
 
     public static WebElement waitForClickable(WebElement element) {
-        return waitThreadLocal
-                .get()
-                .waitForClickable(element);
+        return getWait().until(ExpectedConditions.elementToBeClickable(element));
     }
 
-    public static void waitForPageReady() {
-        waitThreadLocal
-                .get()
-                .waitForPageReady();
+    public static boolean waitForInvisibility(WebElement element) {
+        return getWait().until(ExpectedConditions.invisibilityOf(element));
+    }
+
+    public static boolean waitForInvisibilityAll(List<WebElement> elements) {
+        return getWait().until(ExpectedConditions.invisibilityOfAllElements(elements));
+    }
+
+    public static boolean waitForPageReady() {
+        return getWait().until(driver -> {
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            return Constants.JS.COMPLETE.equals(js.executeScript(Constants.JS.READY_STATE));
+        });
+    }
+
+    public static void waitForPageFullyLoaded() {
+        waitForPageReady();
+    }
+
+    public static boolean waitForScrollAt(long expectedPosition) {
+        return getWait().until(driver -> {
+            Object result = ((JavascriptExecutor) driver).executeScript(Constants.JS.SCROLL_POSITION);
+            return ((Number) result).longValue() == expectedPosition;
+        });
     }
 
     public static void click(WebElement element) {
-        waitThreadLocal
-                .get()
-                .waitForClickable(element)
-                .click();
+        waitForClickable(element).click();
     }
 
     public static void clearAndSendKeys(WebElement element, String text) {
@@ -102,11 +108,5 @@ public class PageActionsHelper {
 
     public static void scrollBy(WebDriver driver, int pixels) {
         executeScript(driver, String.format("window.scrollBy(0, %d);", pixels));
-    }
-
-    public static boolean waitForScrollAt(int expectedPosition) {
-        return waitThreadLocal
-                .get()
-                .waitForScroll(expectedPosition);
     }
 }

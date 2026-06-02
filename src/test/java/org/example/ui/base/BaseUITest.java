@@ -10,7 +10,6 @@ public abstract class BaseUITest {
 
     protected WebDriver driver;
 
-
     @BeforeEach
     public void setUp() {
         driver = DriverManager.getDriver();
