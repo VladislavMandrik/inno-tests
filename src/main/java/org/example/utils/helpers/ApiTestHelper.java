@@ -8,6 +8,8 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.example.config.Constants;
 
+import java.util.Map;
+
 public final class ApiTestHelper {
 
     private ApiTestHelper() {
@@ -50,7 +52,23 @@ public final class ApiTestHelper {
     @Step("API: Поиск по ключевому слову: {keyword}")
     public static Response search(String keyword) {
         return get(Constants.Endpoints.MAIN_PAGE,
-                java.util.Map.of(Constants.Api.QueryParams.SEARCH, keyword));
+                Map.of(Constants.Api.QueryParams.SEARCH, keyword));
+    }
+
+    @Step("API: AJAX поиск по ключевому слову: {keyword}")
+    public static Response searchAjax(String keyword) {
+        return RestAssured
+                .given(getRequestSpec())
+                .header(Constants.Headers.ACCEPT, Constants.MimeTypes.APPLICATION_JSON_TEXT)
+                .header(Constants.Headers.X_REQUESTED_WITH, Constants.Headers.XML_HTTP_REQUEST)
+                .header(Constants.Headers.REFERER, Constants.Environment.BASE_URL + Constants.Paths.SEARCH_REFERER + keyword)
+                .queryParam(Constants.Api.QueryParams.ACTION, Constants.Api.QueryParams.ALM_GET_POSTS)
+                .queryParam(Constants.Api.QueryParams.SEARCH, keyword)
+                .queryParam(Constants.Api.QueryParams.POST_TYPE, Constants.Api.QueryParams.POST_TYPE_VALUE)
+                .queryParam(Constants.Api.QueryParams.POSTS_PER_PAGE, Constants.Api.QueryParams.POSTS_PER_PAGE_VALUE)
+                .queryParam(Constants.Api.QueryParams.ORDERBY, Constants.Api.QueryParams.ORDERBY_VALUE)
+                .when()
+                .get(Constants.Endpoints.AJAX);
     }
 
     public static void setupBaseUrl(String baseUrl) {

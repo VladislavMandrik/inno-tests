@@ -10,67 +10,77 @@ public final class Constants {
 
     public static final Duration POLLING_INTERVAL = Duration.ofMillis(200);
 
-        // Browser
-        public static final String DEFAULT_BROWSER = "chrome";
-        public static final int BROWSER_WIDTH = 1920;
-        public static final int BROWSER_HEIGHT = 1080;
+    // Browser
+    public static final String DEFAULT_BROWSER = "chrome";
+    public static final int BROWSER_WIDTH = 1920;
+    public static final int BROWSER_HEIGHT = 1080;
 
-        // Browser Arguments
-        public static final class BrowserArgs {
-            public static final String NO_SANDBOX = "--no-sandbox";
-            public static final String DISABLE_DEV_SHM = "--disable-dev-shm-usage";
-            public static final String DISABLE_GPU = "--disable-gpu";
-            public static final String DISABLE_EXTENSIONS = "--disable-extensions";
-            public static final String DISABLE_NOTIFICATIONS = "--disable-notifications";
-            public static final String DISABLE_INFO_BARS = "--disable-infobars";
-            public static final String HEADLESS_NEW = "--headless=new";
-            public static final String HEADLESS = "--headless";
-            public static final String REMOTE_ALLOW_ORIGINS = "--remote-allow-origins=*";
+    // Browser Arguments
+    public static final class BrowserArgs {
+        public static final String NO_SANDBOX = "--no-sandbox";
+        public static final String DISABLE_DEV_SHM = "--disable-dev-shm-usage";
+        public static final String DISABLE_GPU = "--disable-gpu";
+        public static final String DISABLE_EXTENSIONS = "--disable-extensions";
+        public static final String DISABLE_NOTIFICATIONS = "--disable-notifications";
+        public static final String DISABLE_INFO_BARS = "--disable-infobars";
+        public static final String HEADLESS_NEW = "--headless=new";
+        public static final String HEADLESS = "--headless";
+        public static final String REMOTE_ALLOW_ORIGINS = "--remote-allow-origins=*";
 
-            // CI-specific
-            public static final String DISABLE_WEB_SECURITY = "--disable-web-security";
-            public static final String ALLOW_INSECURE_CONTENT = "--allow-running-insecure-content";
-            public static final String NO_ZYGOTE = "--no-zygote";
-            public static final String DISABLE_SETUID_SANDBOX = "--disable-setuid-sandbox";
-            public static final String SINGLE_PROCESS = "--single-process";
+        // CI-specific
+        public static final String DISABLE_WEB_SECURITY = "--disable-web-security";
+        public static final String ALLOW_INSECURE_CONTENT = "--allow-running-insecure-content";
+        public static final String NO_ZYGOTE = "--no-zygote";
+        public static final String DISABLE_SETUID_SANDBOX = "--disable-setuid-sandbox";
+        public static final String SINGLE_PROCESS = "--single-process";
 
-            // Window size format
-            public static final String WINDOW_SIZE = "--window-size=%d,%d";
-            public static final String WIDTH = "--width=%d";
-            public static final String HEIGHT = "--height=%d";
+        // Window size format
+        public static final String WINDOW_SIZE = "--window-size=%d,%d";
+        public static final String WIDTH = "--width=%d";
+        public static final String HEIGHT = "--height=%d";
 
-            // Exclude switches
-            public static final String EXCLUDE_AUTOMATION_SWITCH = "enable-automation";
-        }
+        // Exclude switches
+        public static final String EXCLUDE_AUTOMATION_SWITCH = "enable-automation";
+    }
 
-        // Browser Preferences Keys
-        public static final class BrowserPrefs {
-            public static final String NOTIFICATIONS = "profile.default_content_setting_values.notifications";
-            public static final String CREDENTIALS_SERVICE = "credentials_enable_service";
-            public static final String PASSWORD_MANAGER = "password_manager_enabled";
-            // Firefox
-            public static final String WEB_NOTIFICATIONS = "dom.webnotifications.enabled";
-            public static final String PUSH_ENABLED = "dom.push.enabled";
-            public static final String DOWNLOAD_FOLDER_LIST = "browser.download.folderList";
-            public static final String NEVER_ASK_SAVE_TO_DISK = "browser.helperApps.neverAsk.saveToDisk";
-        }
+    // Browser Preferences Keys
+    public static final class BrowserPrefs {
+        public static final String NOTIFICATIONS = "profile.default_content_setting_values.notifications";
+        public static final String CREDENTIALS_SERVICE = "credentials_enable_service";
+        public static final String PASSWORD_MANAGER = "password_manager_enabled";
+        // Firefox
+        public static final String WEB_NOTIFICATIONS = "dom.webnotifications.enabled";
+        public static final String PUSH_ENABLED = "dom.push.enabled";
+        public static final String DOWNLOAD_FOLDER_LIST = "browser.download.folderList";
+        public static final String NEVER_ASK_SAVE_TO_DISK = "browser.helperApps.neverAsk.saveToDisk";
+    }
 
-        public static final class MimeTypes {
-            public static final String OCTET_STREAM = "application/octet-stream";
-        }
+    public static final class Headers {
+        public static final String ACCEPT = "accept";
+        public static final String X_REQUESTED_WITH = "x-requested-with";
+        public static final String XML_HTTP_REQUEST = "XMLHttpRequest";
+        public static final String REFERER = "referer";
+    }
 
-        public static final class SafariCaps {
-            public static final String TECHNOLOGY_PREVIEW = "technologyPreview";
-            public static final String AUTOMATIC_INSPECTION = "automaticInspection";
-        }
+    public static final class MimeTypes {
+        public static final String APPLICATION_JSON_TEXT = "application/json, text/plain, */*";
+        public static final String APPLICATION_JSON = "application/json";
+        public static final String TEXT_HTML = "text/html";
+        public static final String OCTET_STREAM = "application/octet-stream";
+    }
 
-        // Environment Detection
-        public static final class EnvVars {
-            public static final String CI = "CI";
-            public static final String JENKINS_HOME = "JENKINS_HOME";
-            public static final String GITHUB_ACTIONS = "GITHUB_ACTIONS";
-            public static final String TEAMCITY_VERSION = "TEAMCITY_VERSION";
-            public static final String GITLAB_CI = "GITLAB_CI";
+    public static final class SafariCaps {
+        public static final String TECHNOLOGY_PREVIEW = "technologyPreview";
+        public static final String AUTOMATIC_INSPECTION = "automaticInspection";
+    }
+
+    // Environment Detection
+    public static final class EnvVars {
+        public static final String CI = "CI";
+        public static final String JENKINS_HOME = "JENKINS_HOME";
+        public static final String GITHUB_ACTIONS = "GITHUB_ACTIONS";
+        public static final String TEAMCITY_VERSION = "TEAMCITY_VERSION";
+        public static final String GITLAB_CI = "GITLAB_CI";
     }
 
     public static final class Environment {
@@ -82,6 +92,7 @@ public final class Constants {
         public static final String MAIN_PAGE = "/";
         public static final String ABOUT_US = "/about-us/";
         public static final String ABOUT_US_RU = "/ru/about-us/";
+        public static final String AJAX = "/wp-admin/admin-ajax.php";
     }
 
     public static final class Selectors {
@@ -159,6 +170,7 @@ public final class Constants {
     public static final class Paths {
         public static final String SCREENSHOT_DIR = "target/screenshots";
         public static final String FOOTER_CONTACTS_CSV = "/data/footer_contacts.csv";
+        public static final String SEARCH_REFERER = "/?s=";
     }
 
     public static final class Formats {
@@ -184,6 +196,14 @@ public final class Constants {
 
         public static final class QueryParams {
             public static final String SEARCH = "s";
+            public static final String ACTION = "action";
+            public static final String ALM_GET_POSTS = "alm_get_posts";
+            public static final String POST_TYPE = "post_type";
+            public static final String POST_TYPE_VALUE = "post, page, case";
+            public static final String POSTS_PER_PAGE = "posts_per_page";
+            public static final String POSTS_PER_PAGE_VALUE = "-1";
+            public static final String ORDERBY = "orderby";
+            public static final String ORDERBY_VALUE = "relevance";
         }
     }
 
