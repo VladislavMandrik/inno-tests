@@ -2,9 +2,10 @@ package org.example.ui;
 
 import io.qameta.allure.*;
 import org.example.config.Constants;
-import org.example.pages.MainPage;
-import org.example.ui.base.BaseTest;
+import org.example.ui.operations.MainPageOperations;
+import org.example.ui.base.BaseUITest;
 import org.example.utils.driver.DriverManager;
+import org.example.utils.helpers.PageActionsHelper;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -20,11 +21,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Feature("Отображение футера")
 @Tag("e2e")
 @DisplayName("E2E: Проверка футера")
-public class CheckFooterLinksTest extends BaseTest {
+public class CheckFooterLinksTest extends BaseUITest {
+    private MainPageOperations mainPageOperations;
 
     @BeforeAll
     void openPageOnce() {
-        mainPage = MainPage.openAndWait(DriverManager.getDriver());
+        PageActionsHelper.init(DriverManager.getDriver());
+        mainPageOperations = new MainPageOperations(DriverManager.getDriver());
+        mainPageOperations.openAndWait();
     }
 
     @AfterEach
@@ -51,7 +55,7 @@ public class CheckFooterLinksTest extends BaseTest {
     @DisplayName("E2E: Проверка ссылок в футере")
     @Description("Проверка текста ссылок в разделе About Us футера")
     public void shouldDisplayCorrectFooterLinksAU(String href, String expectedText) {
-        String actualText = mainPage
+        String actualText = mainPageOperations
                 .getFooterLinkText(href);
 
         assertEquals(expectedText, actualText,
@@ -64,7 +68,7 @@ public class CheckFooterLinksTest extends BaseTest {
     @DisplayName("E2E: Проверка ссылок в футере")
     @Description("Проверка текста ссылок в разделе Contact Us футера")
     public void shouldDisplayCorrectFooterLinksCU(String href, String expectedText) {
-        String actualText = mainPage
+        String actualText = mainPageOperations
                 .getFooterLinkText(href);
 
         assertEquals(expectedText, actualText,
