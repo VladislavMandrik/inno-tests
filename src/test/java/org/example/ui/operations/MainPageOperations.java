@@ -18,6 +18,10 @@ public class MainPageOperations {
         this.mainPage = new MainPage(driver);
     }
 
+    public MainPageOperations(MainPage mainPage) {
+        this.mainPage = mainPage;
+    }
+
     @Step("Открытие главной страницы")
     public MainPageOperations open() {
         mainPage

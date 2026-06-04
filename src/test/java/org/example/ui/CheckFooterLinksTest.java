@@ -21,11 +21,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Feature("Отображение футера")
 @Tag("e2e")
 @DisplayName("E2E: Проверка футера")
-public class CheckFooterLinksTest extends BaseUITest {
+class CheckFooterLinksTest extends BaseUITest {
     private MainPageOperations mainPageOperations;
 
     @BeforeAll
-    void openPageOnce() {
+    public void openPageOnce() {
         PageActionsHelper.init(DriverManager.getDriver());
         mainPageOperations = new MainPageOperations(DriverManager.getDriver());
         mainPageOperations.openAndWait();
@@ -37,7 +37,7 @@ public class CheckFooterLinksTest extends BaseUITest {
     }
 
     @AfterAll
-    void closeDriver() {
+    public void closeDriver() {
         DriverManager.quitDriver();
     }
 
@@ -54,7 +54,7 @@ public class CheckFooterLinksTest extends BaseUITest {
     @Story("Отображение футера")
     @DisplayName("E2E: Проверка ссылок в футере")
     @Description("Проверка текста ссылок в разделе About Us футера")
-    public void shouldDisplayCorrectFooterLinksAU(String href, String expectedText) {
+    void shouldDisplayCorrectFooterLinksAU(String href, String expectedText) {
         String actualText = mainPageOperations
                 .getFooterLinkText(href);
 
@@ -67,7 +67,7 @@ public class CheckFooterLinksTest extends BaseUITest {
     @Story("Отображение футера")
     @DisplayName("E2E: Проверка ссылок в футере")
     @Description("Проверка текста ссылок в разделе Contact Us футера")
-    public void shouldDisplayCorrectFooterLinksCU(String href, String expectedText) {
+    void shouldDisplayCorrectFooterLinksCU(String href, String expectedText) {
         String actualText = mainPageOperations
                 .getFooterLinkText(href);
 

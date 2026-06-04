@@ -14,13 +14,13 @@ import static org.hamcrest.Matchers.*;
 @Feature("Поиск")
 @Tag("api")
 @DisplayName("API: Поиск по сайту")
-public class SearchApiTests extends BaseApiTest {
+class SearchApiTests extends BaseApiTest {
 
     @Test
     @Story("Успешный поиск")
     @DisplayName("GET /?s=test → 200 OK, результаты найдены")
     @Description("Проверка поиска по ключевому слову 'test'")
-    public void shouldReturnValidSearchResults() {
+    void shouldReturnValidSearchResults() {
         Response response = ApiTestHelper.search(Constants.TestData.SEARCH_KEYWORD);
 
         assertThat(response.statusCode(), is(HttpStatus.SC_OK));
@@ -34,7 +34,7 @@ public class SearchApiTests extends BaseApiTest {
     @Story("Негативный сценарий")
     @DisplayName("GET /?s= → 200 OK, страница поиска без результатов")
     @Description("Проверка поведения при пустом поисковом запросе")
-    public void shouldShowSearchPageWithEmptyQuery() {
+    void shouldShowSearchPageWithEmptyQuery() {
         Response response = ApiTestHelper.search("");
 
         assertThat(response.statusCode(), is(HttpStatus.SC_OK));
@@ -51,7 +51,7 @@ public class SearchApiTests extends BaseApiTest {
     @Story("AJAX поиск")
     @DisplayName("API: AJAX поиск по слову 'test' возвращает результаты, содержащие искомое слово")
     @Description("Проверка AJAX эндпоинта поиска — результаты содержат ключевое слово")
-    public void shouldFindResults() {
+    void shouldFindResults() {
         Response response = ApiTestHelper.searchAjax(Constants.TestData.SEARCH_KEYWORD);
 
         assertThat(response.statusCode(), is(HttpStatus.SC_OK));

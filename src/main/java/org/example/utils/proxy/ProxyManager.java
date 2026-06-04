@@ -2,10 +2,8 @@ package org.example.utils.proxy;
 
 import net.lightbody.bmp.BrowserMobProxy;
 import net.lightbody.bmp.BrowserMobProxyServer;
-import net.lightbody.bmp.client.ClientUtil;
 import net.lightbody.bmp.proxy.CaptureType;
 import org.example.config.Constants;
-import org.openqa.selenium.Proxy;
 
 import java.util.EnumSet;
 
@@ -38,19 +36,8 @@ public final class ProxyManager {
         }
     }
 
-    public static Proxy getSeleniumProxy() {
-        if (proxy == null) {
-            throw new IllegalStateException(Constants.Errors.PROXY_NOT_STARTED);
-        }
-        return ClientUtil.createSeleniumProxy(proxy);
-    }
-
     public static BrowserMobProxy getProxyInstance() {
         return proxy;
-    }
-
-    public static int getPort() {
-        return proxy != null ? proxy.getPort() : -1;
     }
 
     public static void stop() {

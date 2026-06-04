@@ -15,6 +15,7 @@ public final class ConfigReader {
     private static final String ENV_PROFILE = "env";
     private static final String TEST_ENV = "TEST_ENV";
     private static final String PROFILE_CI = "ci";
+    private static final String CANNOT_LOAD_CONFIG = "⚠ Cannot load config: ";
 
     static {
         loadProperties(CONFIG_PATH);
@@ -32,7 +33,7 @@ public final class ConfigReader {
                 properties.load(input);
             }
         } catch (IOException e) {
-            System.err.println("⚠ Cannot load config: " + path);
+            System.err.println(CANNOT_LOAD_CONFIG + path);
         }
     }
 
@@ -55,16 +56,8 @@ public final class ConfigReader {
         });
     }
 
-    public static String getString(String key) {
-        return properties.getProperty(key);
-    }
-
     public static String getString(String key, String defaultValue) {
         return properties.getProperty(key, defaultValue);
-    }
-
-    public static int getInt(String key) {
-        return Integer.parseInt(properties.getProperty(key));
     }
 
     public static int getInt(String key, int defaultValue) {
@@ -72,20 +65,9 @@ public final class ConfigReader {
         return value != null ? Integer.parseInt(value) : defaultValue;
     }
 
-    public static boolean getBoolean(String key) {
-        return Boolean.parseBoolean(properties.getProperty(key));
-    }
-
     public static boolean getBoolean(String key, boolean defaultValue) {
         String value = properties.getProperty(key);
         return value != null ? Boolean.parseBoolean(value) : defaultValue;
     }
 
-    public static void printAll() {
-        System.out.println("=== Current Configuration ===");
-        properties.stringPropertyNames().stream()
-                .sorted()
-                .forEach(key -> System.out.println(key + " = " + properties.getProperty(key)));
-        System.out.println("=============================");
-    }
 }

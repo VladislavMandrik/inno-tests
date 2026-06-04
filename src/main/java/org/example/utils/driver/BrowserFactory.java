@@ -1,9 +1,10 @@
 package org.example.utils.driver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.example.config.BrowserConfig;
 import org.example.config.Constants;
 import org.example.config.DriverConfig;
-import org.example.utils.proxy.ProxyManager;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -16,7 +17,10 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import static org.example.config.BrowserConfig.*;
 
 public final class BrowserFactory {
 
@@ -36,25 +40,20 @@ public final class BrowserFactory {
                 WebDriverManager.chromedriver().setup();
                 driver = new ChromeDriver(getChromeOptions());
                 break;
-
             case FIREFOX:
                 WebDriverManager.firefoxdriver().setup();
                 driver = new FirefoxDriver(getFirefoxOptions());
                 break;
-
             case EDGE:
                 WebDriverManager.edgedriver().setup();
                 driver = new EdgeDriver(getEdgeOptions());
                 break;
-
             case SAFARI:
                 driver = new SafariDriver(getSafariOptions());
                 break;
-
             default:
                 throw new IllegalArgumentException(
-                        String.format(Constants.Errors.UNSUPPORTED_BROWSER, browser)
-                );
+                        String.format(Constants.Errors.UNSUPPORTED_BROWSER, browser));
         }
 
         configureTimeouts(driver);
@@ -64,86 +63,76 @@ public final class BrowserFactory {
     private static ChromeOptions getChromeOptions() {
         ChromeOptions options = new ChromeOptions();
 
-        if ("true".equals(System.getProperty("proxy.enabled"))) {
-            Proxy seleniumProxy = ProxyManager.getSeleniumProxy();
-            options.setProxy(seleniumProxy);
-
-            try {
-                options.setAcceptInsecureCerts(true);
-            } catch (Throwable ignored) {
-                options.setCapability("acceptInsecureCerts", true);
-            }
-
-            options.addArguments("--ignore-certificate-errors");
-            options.addArguments("--proxy-bypass-list=<-loopback>");
-        }
-
-        options.addArguments(
-                Constants.BrowserArgs.NO_SANDBOX,
-                Constants.BrowserArgs.DISABLE_DEV_SHM,
-                Constants.BrowserArgs.REMOTE_ALLOW_ORIGINS,
-                Constants.BrowserArgs.DISABLE_GPU,
-                Constants.BrowserArgs.DISABLE_EXTENSIONS
-        );
+        List<String> chromeArgs = BrowserConfig.getList(CHROME_ARGS);
+        options.addArguments(chromeArgs.toArray(new String[0]));
 
         if (DriverConfig.isHeadless()) {
-            options.addArguments(Constants.BrowserArgs.HEADLESS_NEW);
+            options.addArguments(BrowserConfig.get(CHROME_HEADLESS));
             options.addArguments(String.format(
-                    Constants.BrowserArgs.WINDOW_SIZE,
-                    DriverConfig.getBrowserWidth(),
-                    DriverConfig.getBrowserHeight()
-            ));
+                    BrowserConfig.get(CHROME_WINDOW_SIZE),
+                    BrowserConfig.getInt(BROWSER_WIDTH),
+                    BrowserConfig.getInt(BROWSER_HEIGHT)));
         }
-
-        options.addArguments(Constants.BrowserArgs.DISABLE_NOTIFICATIONS);
-        options.addArguments(Constants.BrowserArgs.DISABLE_INFO_BARS);
 
         if (isRunningInCI()) {
-            options.addArguments(Constants.BrowserArgs.DISABLE_WEB_SECURITY);
-            options.addArguments(Constants.BrowserArgs.ALLOW_INSECURE_CONTENT);
-            options.addArguments(Constants.BrowserArgs.NO_ZYGOTE);
-            options.addArguments(Constants.BrowserArgs.DISABLE_SETUID_SANDBOX);
-            options.addArguments(Constants.BrowserArgs.SINGLE_PROCESS);
+            List<String> ciArgs = BrowserConfig.getList(CI_ARGS);
+            options.addArguments(ciArgs.toArray(new String[0]));
         }
 
-        Map<String, Object> prefs = new HashMap<>();
-        prefs.put(Constants.BrowserPrefs.NOTIFICATIONS, 2);
-        prefs.put(Constants.BrowserPrefs.CREDENTIALS_SERVICE, false);
-        prefs.put(Constants.BrowserPrefs.PASSWORD_MANAGER, false);
-        options.setExperimentalOption("prefs", prefs);
+        configureWireMockProxy(options);
 
-        options.setExperimentalOption("excludeSwitches",
-                new String[]{Constants.BrowserArgs.EXCLUDE_AUTOMATION_SWITCH});
-        options.setExperimentalOption("useAutomationExtension", false);
+        Map<String, Object> prefs = new HashMap<>();
+        prefs.put(BrowserConfig.get(CHROME_PREFS_KEY_NOTIFICATIONS),
+                BrowserConfig.getInt(CHROME_PREFS_NOTIFICATIONS));
+        prefs.put(BrowserConfig.get(CHROME_PREFS_KEY_CREDENTIALS),
+                BrowserConfig.getBoolean(CHROME_PREFS_CREDENTIALS));
+        prefs.put(BrowserConfig.get(CHROME_PREFS_KEY_PASSWORD),
+                BrowserConfig.getBoolean(CHROME_PREFS_PASSWORD));
+        options.setExperimentalOption(BrowserConfig.get(PREFS_KEY), prefs);
+
+        options.setExperimentalOption(BrowserConfig.get(EXCLUDE_SWITCHES_KEY),
+                new String[]{BrowserConfig.get(CHROME_EXCLUDE_SWITCHES)});
+        options.setExperimentalOption(BrowserConfig.get(USE_AUTOMATION_EXTENSION_KEY),
+                BrowserConfig.getBoolean(USE_AUTOMATION_EXTENSION_VALUE));
 
         options.setPageLoadStrategy(DriverConfig.getPageLoadStrategy());
-
         return options;
+    }
+
+    private static void configureWireMockProxy(ChromeOptions options) {
+        String wireMockProxy = System.getProperty(BrowserConfig.get(WIREMOCK_PROXY_PROPERTY));
+        if (wireMockProxy != null) {
+            Proxy proxy = new Proxy();
+            proxy.setHttpProxy(wireMockProxy);
+            options.setProxy(proxy);
+            options.setAcceptInsecureCerts(BrowserConfig.getBoolean(ACCEPT_INSECURE_CERTS));
+            options.addArguments(BrowserConfig.get(IGNORE_CERTIFICATE_ERRORS));
+        }
     }
 
     private static FirefoxOptions getFirefoxOptions() {
         FirefoxOptions options = new FirefoxOptions();
 
         if (DriverConfig.isHeadless()) {
-            options.addArguments(Constants.BrowserArgs.HEADLESS);
+            options.addArguments(BrowserConfig.get(FIREFOX_HEADLESS));
             options.addArguments(String.format(
-                    Constants.BrowserArgs.WIDTH,
-                    DriverConfig.getBrowserWidth()
-            ));
+                    BrowserConfig.get(FIREFOX_WIDTH),
+                    BrowserConfig.getInt(BROWSER_WIDTH)));
             options.addArguments(String.format(
-                    Constants.BrowserArgs.HEIGHT,
-                    DriverConfig.getBrowserHeight()
-            ));
+                    BrowserConfig.get(FIREFOX_HEIGHT),
+                    BrowserConfig.getInt(BROWSER_HEIGHT)));
         }
 
-        options.addPreference(Constants.BrowserPrefs.WEB_NOTIFICATIONS, false);
-        options.addPreference(Constants.BrowserPrefs.PUSH_ENABLED, false);
-        options.addPreference(Constants.BrowserPrefs.DOWNLOAD_FOLDER_LIST, 2);
-        options.addPreference(Constants.BrowserPrefs.NEVER_ASK_SAVE_TO_DISK,
-                Constants.MimeTypes.OCTET_STREAM);
+        options.addPreference(BrowserConfig.get(FIREFOX_PREFS_KEY_WEB),
+                BrowserConfig.getBoolean(FIREFOX_PREFS_WEB));
+        options.addPreference(BrowserConfig.get(FIREFOX_PREFS_KEY_PUSH),
+                BrowserConfig.getBoolean(FIREFOX_PREFS_PUSH));
+        options.addPreference(BrowserConfig.get(FIREFOX_PREFS_KEY_DOWNLOAD),
+                BrowserConfig.getInt(FIREFOX_PREFS_DOWNLOAD));
+        options.addPreference(BrowserConfig.get(FIREFOX_PREFS_KEY_NEVER_ASK),
+                BrowserConfig.get(FIREFOX_PREFS_NEVER_ASK));
 
         options.setPageLoadStrategy(DriverConfig.getPageLoadStrategy());
-
         return options;
     }
 
@@ -151,33 +140,26 @@ public final class BrowserFactory {
         EdgeOptions options = new EdgeOptions();
 
         if (DriverConfig.isHeadless()) {
-            options.addArguments(Constants.BrowserArgs.HEADLESS_NEW);
+            options.addArguments(BrowserConfig.get(CHROME_HEADLESS));
             options.addArguments(String.format(
-                    Constants.BrowserArgs.WINDOW_SIZE,
-                    DriverConfig.getBrowserWidth(),
-                    DriverConfig.getBrowserHeight()
-            ));
+                    BrowserConfig.get(CHROME_WINDOW_SIZE),
+                    BrowserConfig.getInt(BROWSER_WIDTH),
+                    BrowserConfig.getInt(BROWSER_HEIGHT)));
         }
 
-        options.addArguments(Constants.BrowserArgs.DISABLE_NOTIFICATIONS);
-        options.addArguments(Constants.BrowserArgs.REMOTE_ALLOW_ORIGINS);
-        options.addArguments(Constants.BrowserArgs.NO_SANDBOX);
-        options.addArguments(Constants.BrowserArgs.DISABLE_DEV_SHM);
+        List<String> chromeArgs = BrowserConfig.getList(CHROME_ARGS);
+        options.addArguments(chromeArgs.toArray(new String[0]));
 
         options.setPageLoadStrategy(DriverConfig.getPageLoadStrategy());
-
         return options;
     }
 
     private static SafariOptions getSafariOptions() {
         SafariOptions options = new SafariOptions();
-        options.setAutomaticInspection(false);
-
-        options.setCapability("safari.options", Map.of(
-                Constants.SafariCaps.TECHNOLOGY_PREVIEW, false,
-                Constants.SafariCaps.AUTOMATIC_INSPECTION, false
-        ));
-
+        options.setAutomaticInspection(BrowserConfig.getBoolean(SAFARI_AUTOMATIC_INSPECTION));
+        options.setCapability(BrowserConfig.get(SAFARI_OPTIONS_KEY), Map.of(
+                BrowserConfig.get(SAFARI_TECHNOLOGY_PREVIEW), BrowserConfig.getBoolean(SAFARI_TECHNOLOGY_PREVIEW),
+                BrowserConfig.get(SAFARI_AUTOMATIC_INSPECTION), BrowserConfig.getBoolean(SAFARI_AUTOMATIC_INSPECTION)));
         return options;
     }
 
@@ -185,14 +167,17 @@ public final class BrowserFactory {
         driver.manage().timeouts().pageLoadTimeout(DriverConfig.getPageLoadTimeout());
         driver.manage().timeouts().scriptTimeout(DriverConfig.getScriptTimeout());
 
-        if (!DriverConfig.isHeadless()) {
+        if (DriverConfig.isHeadless()) {
+            driver.manage().window().setSize(new Dimension(
+                    BrowserConfig.getInt(BROWSER_WIDTH),
+                    BrowserConfig.getInt(BROWSER_HEIGHT)));
+        } else {
             try {
                 driver.manage().window().maximize();
             } catch (Exception e) {
-                driver.manage().window().setSize(new org.openqa.selenium.Dimension(
-                        DriverConfig.getBrowserWidth(),
-                        DriverConfig.getBrowserHeight()
-                ));
+                driver.manage().window().setSize(new Dimension(
+                        BrowserConfig.getInt(BROWSER_WIDTH),
+                        BrowserConfig.getInt(BROWSER_HEIGHT)));
             }
         }
     }

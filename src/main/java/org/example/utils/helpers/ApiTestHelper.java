@@ -70,8 +70,4 @@ public final class ApiTestHelper {
                 .when()
                 .get(Constants.Endpoints.AJAX);
     }
-
-    public static void setupBaseUrl(String baseUrl) {
-        RestAssured.baseURI = baseUrl;
-    }
 }

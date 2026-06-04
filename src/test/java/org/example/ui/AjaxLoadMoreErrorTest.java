@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Feature("AJAX Load More в поиске")
 @Tag("e2e")
 @DisplayName("E2E: Обработка ошибок AJAX через BrowserMob Proxy при поиске на странице")
-public class AjaxLoadMoreErrorTest extends BaseUITest {
+class AjaxLoadMoreErrorTest extends BaseUITest {
     private MainPageOperations mainPageOperations;
     private SearchPage searchPage;
 
