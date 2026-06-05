@@ -10,6 +10,10 @@ public final class Constants {
 
     public static final Duration POLLING_INTERVAL = Duration.ofMillis(200);
 
+    public static final String INVALID_USERNAME = "INVALID_USERNAME";
+    public static final String INVALID_PASSWORD = "INVALID_PASSWORD";
+    public static final String EMPTY_STRING = "";
+
     public static final class Headers {
         public static final String ACCEPT = "accept";
         public static final String X_REQUESTED_WITH = "x-requested-with";
@@ -28,13 +32,6 @@ public final class Constants {
         public static final String GITHUB_ACTIONS = "GITHUB_ACTIONS";
         public static final String TEAMCITY_VERSION = "TEAMCITY_VERSION";
         public static final String GITLAB_CI = "GITLAB_CI";
-    }
-
-    public static final class Env {
-        public static final String ADMIN_USERNAME = "ADMIN_USERNAME";
-        public static final String ADMIN_PASSWORD = "ADMIN_PASSWORD";
-        public static final String USER_USERNAME = "USER_USERNAME";
-        public static final String USER_PASSWORD = "USER_PASSWORD";
     }
 
     public static final class Environment {
@@ -119,7 +116,6 @@ public final class Constants {
         public static final String MIME_HTML = "text/html";
 
         public static final String EXT_PNG = "png";
-
     }
 
     public static final class Paths {
@@ -142,7 +138,6 @@ public final class Constants {
         public static final String SCROLL_POSITION = "return window.scrollY;";
         public static final String WINDOW_INNER_HEIGHT = "return window.innerHeight;";
         public static final String BODY_SCROLL_HEIGHT = "return document.body.scrollHeight;";
-
     }
 
     public static final class Api {

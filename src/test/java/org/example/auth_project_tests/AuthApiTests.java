@@ -4,6 +4,7 @@ import io.qameta.allure.*;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import org.example.api.BaseApiTest;
+import org.example.config.Constants;
 import org.example.enums.Role;
 import org.example.utils.helpers.ApiTestHelper;
 import org.junit.jupiter.api.*;
@@ -24,35 +25,70 @@ class AuthApiTests extends BaseApiTest {
     @ParameterizedTest(name = "Пользователь: {0}")
     @EnumSource(Role.class)
     @Story("Страница авторизации")
-    @DisplayName("API: Успешное получение JWT токена")
-    @Description("Проверка получения токена с разными зарегистрированными пользователями")
-    void shouldAuthenticateWithDifferentUsers(Role role) {
+    @DisplayName("API: Проверка получения токена - позитивный сценарий")
+    @Description("Проверка получения токена - позитивный сценарий")
+    void shouldAuthenticate(Role role) {
         Response response = ApiTestHelper.getAuthToken(role.getUsername(), role.getPassword());
         assertThat(response.statusCode(), is(HttpStatus.SC_OK));
         assertThat(response.body().jsonPath().getString(TOKEN), notNullValue());
     }
 
-//    @ParameterizedTest(name = "#{index}")
-//    @MethodSource("provideInvalidCredentials")
-//    @Story("Страница авторизации")
-//    @DisplayName("API: Ошибка в получении JWT токена")
-//    @Description("Проверка получения токена с разными зарегистрированными пользователями с неверными данными")
-//    void shouldNotAuthenticateWithDifferentUsers(String username, String password) {
-//        Response response = ApiTestHelper.getAuthToken(username, password);
-//        assertThat(response.statusCode(), is(HttpStatus.SC_UNAUTHORIZED));
-//    }
-//
-//    static Stream<Arguments> provideInvalidCredentials() {
-//        return Stream.of(Arguments.of(EnvConfig.get(Constants.Env.ADMIN_USERNAME), "invalidPassword"),
-//                Arguments.of("invalidLogin", EnvConfig.get(Constants.Env.ADMIN_PASSWORD)),
-//                Arguments.of(EnvConfig.get(Constants.Env.USER_USERNAME), "invalidPassword"),
-//                Arguments.of("invalidLogin", EnvConfig.get(Constants.Env.USER_PASSWORD)),
-//                Arguments.of("invalidLogin", "invalidPassword"),
-//                Arguments.of(EnvConfig.get(Constants.Env.ADMIN_USERNAME), ""),
-//                Arguments.of("", EnvConfig.get(Constants.Env.ADMIN_PASSWORD)),
-//                Arguments.of(EnvConfig.get(Constants.Env.USER_USERNAME), ""),
-//                Arguments.of("", EnvConfig.get(Constants.Env.USER_PASSWORD)),
-//                Arguments.of("", "")
-//        );
-//    }
+    @ParameterizedTest(name = "Пользователь: {0}")
+    @EnumSource(Role.class)
+    @Story("Страница авторизации")
+    @DisplayName("API: Проверка получения токена при невалидном логине")
+    @Description("Проверка получения токена при невалидном логине")
+    void shouldNotAuthenticateWithInvalidLogin(Role role) {
+        Response response = ApiTestHelper.getAuthToken(Constants.INVALID_USERNAME, role.getPassword());
+        assertThat(response.statusCode(), is(HttpStatus.SC_UNAUTHORIZED));
+    }
+
+    @ParameterizedTest(name = "Пользователь: {0}")
+    @EnumSource(Role.class)
+    @Story("Страница авторизации")
+    @DisplayName("API: Проверка получения токена при невалидном пароле")
+    @Description("Проверка получения токена при невалидном пароле")
+    void shouldNotAuthenticateWithInvalidPassword(Role role) {
+        Response response = ApiTestHelper.getAuthToken(role.getUsername(), Constants.INVALID_PASSWORD);
+        assertThat(response.statusCode(), is(HttpStatus.SC_UNAUTHORIZED));
+    }
+
+    @Test
+    @Story("Страница авторизации")
+    @DisplayName("API: Проверка получения токена при невалидном логине и пароле")
+    @Description("Проверка получения токена при невалидном логине и пароле")
+    void shouldNotAuthenticateWithInvalidCredentials() {
+        Response response = ApiTestHelper.getAuthToken(Constants.INVALID_USERNAME, Constants.INVALID_PASSWORD);
+        assertThat(response.statusCode(), is(HttpStatus.SC_UNAUTHORIZED));
+    }
+
+    @ParameterizedTest(name = "Пользователь: {0}")
+    @EnumSource(Role.class)
+    @Story("Страница авторизации")
+    @DisplayName("API: Проверка получения токена при пустом логине")
+    @Description("Проверка получения токена при пустом логине")
+    void shouldNotAuthenticateWithEmptyLogin(Role role) {
+        Response response = ApiTestHelper.getAuthToken(Constants.EMPTY_STRING, role.getPassword());
+        assertThat(response.statusCode(), is(HttpStatus.SC_UNAUTHORIZED));
+    }
+
+    @ParameterizedTest(name = "Пользователь: {0}")
+    @EnumSource(Role.class)
+    @Story("Страница авторизации")
+    @DisplayName("API: Проверка получения токена при пустом пароле")
+    @Description("Проверка получения токена при пустом пароле")
+    void shouldNotAuthenticateWithEmptyPassword(Role role) {
+        Response response = ApiTestHelper.getAuthToken(role.getUsername(), Constants.EMPTY_STRING);
+        assertThat(response.statusCode(), is(HttpStatus.SC_UNAUTHORIZED));
+    }
+
+    @Test
+    @Story("Страница авторизации")
+    @DisplayName("API: Проверка получения токена при пустом логине и пароле")
+    @Description("Проверка получения токена при пустом логине и пароле")
+    void shouldNotAuthenticateWithEmptyCredentials() {
+        Response response = ApiTestHelper.getAuthToken(Constants.EMPTY_STRING, Constants.EMPTY_STRING);
+        assertThat(response.statusCode(), is(HttpStatus.SC_UNAUTHORIZED));
+    }
+//    script, sql injection
 }
