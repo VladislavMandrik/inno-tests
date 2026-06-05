@@ -10,7 +10,6 @@ public abstract class BaseApiTest {
     @BeforeEach
     void setUp(TestInfo testInfo) {
         logTestStart(testInfo);
-
     }
 
     @AfterEach

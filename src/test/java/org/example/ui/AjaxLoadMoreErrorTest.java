@@ -58,7 +58,6 @@ class AjaxLoadMoreErrorTest extends BaseUITest {
     @DisplayName("E2E: Обработка 400 ошибки AJAX")
     @Description("Проверка, что при 400 ошибке AJAX результаты поиска не подгружаются")
     void shouldHandleAjax400Error() {
-
         mainPageOperations
                 .openAndWait()
                 .performSearch(Constants.TestData.SEARCH_KEYWORD)

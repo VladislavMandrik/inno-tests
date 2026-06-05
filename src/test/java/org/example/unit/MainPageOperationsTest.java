@@ -46,7 +46,7 @@ class MainPageOperationsTest {
     void shouldNavigateToMainPage() {
         mainPageOperations.open();
 
-        verify(driver).get(Constants.Environment.BASE_URL + Constants.Endpoints.MAIN_PAGE);
+        verify(driver).get(Constants.Environment.INNOWISE_URL + Constants.Endpoints.MAIN_PAGE);
         mockedHelper.verify(PageActionsHelper::waitForPageReady);
     }
 

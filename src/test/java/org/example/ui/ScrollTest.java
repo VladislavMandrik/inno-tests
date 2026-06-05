@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Tag("e2e")
 @DisplayName("E2E: Проверка хедера после скролла")
 class ScrollTest extends BaseUITest {
+    private static final int PIXELS = 800;
     private MainPageOperations mainPageOperations;
     private MainPage mainPage;
 
@@ -30,7 +31,7 @@ class ScrollTest extends BaseUITest {
     void testHeaderVisibleAfterScroll() {
         mainPageOperations.openAndWait();
         assertTrue(mainPage.isMenuDisplayed(), Constants.Messages.HEADER_SHOULD_BE_VISIBLE_AT_START);
-        mainPageOperations.scrollPage(800);
+        mainPageOperations.scrollPage(PIXELS);
         assertTrue(mainPage.isMenuDisplayed(), Constants.Messages.HEADER_SHOULD_BE_VISIBLE_AFTER_SCROLL);
     }
 }

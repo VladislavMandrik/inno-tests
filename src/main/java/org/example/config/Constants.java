@@ -30,8 +30,16 @@ public final class Constants {
         public static final String GITLAB_CI = "GITLAB_CI";
     }
 
+    public static final class Env {
+        public static final String ADMIN_USERNAME = "ADMIN_USERNAME";
+        public static final String ADMIN_PASSWORD = "ADMIN_PASSWORD";
+        public static final String USER_USERNAME = "USER_USERNAME";
+        public static final String USER_PASSWORD = "USER_PASSWORD";
+    }
+
     public static final class Environment {
-        public static final String BASE_URL = "https://innowise.com";
+        public static final String INNOWISE_URL = "https://innowise.com";
+        public static final String LOCALHOST_URL = "http://localhost:8081";
         public static final String DEFAULT_SELENIUM_HUB_URL = "http://localhost:4444/wd/hub";
     }
 
@@ -40,6 +48,12 @@ public final class Constants {
         public static final String ABOUT_US = "/about-us/";
         public static final String ABOUT_US_RU = "/ru/about-us/";
         public static final String AJAX = "/wp-admin/admin-ajax.php";
+        public static final String LOGIN_PAGE_ENDPOINT = "/login";
+    }
+
+    public static final class Auth {
+        public static final String USERNAME = "username";
+        public static final String PASSWORD = "password";
     }
 
     public static final class Selectors {
