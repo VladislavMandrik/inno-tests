@@ -4,15 +4,11 @@ import io.qameta.allure.*;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import org.example.api.BaseApiTest;
-import org.example.config.Constants;
-import org.example.config.EnvConfig;
+import org.example.enums.Role;
 import org.example.utils.helpers.ApiTestHelper;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.stream.Stream;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -25,27 +21,15 @@ import static org.hamcrest.Matchers.*;
 class AuthApiTests extends BaseApiTest {
     private static final String TOKEN = "token";
 
-    @ParameterizedTest(name = "#{index}")
-    @MethodSource("provideCredentials")
+    @ParameterizedTest(name = "Пользователь: {0}")
+    @EnumSource(Role.class)
     @Story("Страница авторизации")
     @DisplayName("API: Успешное получение JWT токена")
     @Description("Проверка получения токена с разными зарегистрированными пользователями")
-    void shouldAuthenticateWithDifferentUsers(String username, String password) {
-        Response response = ApiTestHelper.getAuthToken(username, password);
+    void shouldAuthenticateWithDifferentUsers(Role role) {
+        Response response = ApiTestHelper.getAuthToken(role.getUsername(), role.getPassword());
         assertThat(response.statusCode(), is(HttpStatus.SC_OK));
         assertThat(response.body().jsonPath().getString(TOKEN), notNullValue());
-    }
-
-    static Stream<Arguments> provideCredentials() {
-        return Stream.of(Arguments.of(
-                        EnvConfig.get(Constants.Env.ADMIN_USERNAME),
-                        EnvConfig.get(Constants.Env.ADMIN_PASSWORD)
-                ),
-                Arguments.of(
-                        EnvConfig.get(Constants.Env.USER_USERNAME),
-                        EnvConfig.get(Constants.Env.USER_PASSWORD)
-                )
-        );
     }
 
 //    @ParameterizedTest(name = "#{index}")

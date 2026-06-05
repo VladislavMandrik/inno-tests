@@ -7,6 +7,20 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: usr
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: 123
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     env:
       ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
@@ -24,14 +38,11 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Clone auth-service
+      - name: Clone and start site
         run: |
-          git clone --branch master https://github.com/VladislavMandrik/auth-service.git ../auth-service
-
-      - name: Start services with Docker Compose
-        run: |
-          cp ../auth-service/docker-compose.yml docker-compose.yml
-          docker compose up -d
+          git clone https://github.com/VladislavMandrik/auth-service.git ../auth-service
+          cd ../auth-service
+          mvn spring-boot:run -Dspring-boot.run.profiles=test &
           sleep 30
 
       - name: Setup Chrome
@@ -48,7 +59,7 @@ jobs:
           ERRORS=$(grep -oP 'Errors: \K\d+' test-output.log | tail -1)
           SKIPPED=$(grep -oP 'Skipped: \K\d+' test-output.log | tail -1)
           PASSED=$((TOTAL - FAILURES - ERRORS - SKIPPED))
-          
+
           echo "tests_total=$TOTAL" >> $GITHUB_OUTPUT
           echo "tests_passed=$PASSED" >> $GITHUB_OUTPUT
           echo "tests_failed=$FAILURES" >> $GITHUB_OUTPUT
