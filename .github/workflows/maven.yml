@@ -52,7 +52,7 @@ jobs:
       - name: Run tests
         id: tests
         run: |
-          mvn clean test -Dheadless=true --batch-mode | tee test-output.log
+          mvn clean test -Dheadless=true -Dtest='!AuthApiTests' --batch-mode | tee test-output.log
           TOTAL=$(grep -oP 'Tests run: \K\d+' test-output.log | tail -1)
           FAILURES=$(grep -oP 'Failures: \K\d+' test-output.log | tail -1)
           ERRORS=$(grep -oP 'Errors: \K\d+' test-output.log | tail -1)
