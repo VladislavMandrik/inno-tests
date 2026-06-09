@@ -78,6 +78,9 @@ public final class Constants {
         public static final String SEARCH_RESULT = "search-result";
         public static final String SEARCH_RESULTS_TEXT = "Search results";
         public static final String CONTENT_MASONRY = "content-masonry";
+
+        public static final String SQL_INJECTION = "' OR '1'='1";
+        public static final String XSS_SCRIPT = "<script>alert('xss')</script>";
     }
 
     public static final class Errors {

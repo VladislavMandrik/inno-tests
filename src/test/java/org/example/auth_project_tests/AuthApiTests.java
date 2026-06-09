@@ -90,5 +90,24 @@ class AuthApiTests extends BaseApiTest {
         Response response = ApiTestHelper.getAuthToken(Constants.EMPTY_STRING, Constants.EMPTY_STRING);
         assertThat(response.statusCode(), is(HttpStatus.SC_UNAUTHORIZED));
     }
-//    script, sql injection
+
+    @ParameterizedTest(name = "Пользователь: {0}")
+    @EnumSource(Role.class)
+    @Story("Страница авторизации")
+    @DisplayName("API: SQL инъекция в логине — 401")
+    @Description("Проверка защиты от SQL инъекций через поле логина")
+    void shouldNotAuthenticateWithSQLInjection(Role role) {
+        Response response = ApiTestHelper.getAuthToken(Constants.TestData.SQL_INJECTION, role.getPassword());
+        assertThat(response.statusCode(), is(HttpStatus.SC_UNAUTHORIZED));
+    }
+
+    @ParameterizedTest(name = "Пользователь: {0}")
+    @EnumSource(Role.class)
+    @Story("Страница авторизации")
+    @DisplayName("API: XSS скрипт в пароле — 401")
+    @Description("Проверка защиты от XSS атак через поле пароля")
+    void shouldNotAuthenticateWithXSS(Role role) {
+        Response response = ApiTestHelper.getAuthToken(role.getUsername(), Constants.TestData.XSS_SCRIPT);
+        assertThat(response.statusCode(), is(HttpStatus.SC_UNAUTHORIZED));
+    }
 }
