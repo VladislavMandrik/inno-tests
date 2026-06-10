@@ -6,20 +6,10 @@ import org.openqa.selenium.PageLoadStrategy;
 import java.time.Duration;
 
 public final class DriverConfig {
+    private static final String DEFAULT_BROWSER = "chrome";
 
     private DriverConfig() {
         throw new UnsupportedOperationException(Constants.Errors.UTILITY_CLASS_INSTANTIATION);
-    }
-
-    private static final class PropertyKeys {
-        static final String BROWSER = "browser";
-        static final String HEADLESS = "headless";
-        static final String EXPLICIT_WAIT = "wait.timeout";
-        static final String REMOTE_URL = "remote.url";
-    }
-
-    public static Duration getImplicitWaitTimeout() {
-        return Duration.ZERO;
     }
 
     public static Duration getExplicitWaitTimeout() {
@@ -44,26 +34,10 @@ public final class DriverConfig {
 
     public static Browser getBrowser() {
         return Browser.fromString(ConfigReader.getString(
-                Constants.ConfigKeys.BROWSER, Constants.DEFAULT_BROWSER));
+                Constants.ConfigKeys.BROWSER, DEFAULT_BROWSER));
     }
 
     public static boolean isHeadless() {
         return ConfigReader.getBoolean(Constants.ConfigKeys.HEADLESS, false);
-    }
-
-    public static int getBrowserWidth() {
-        return ConfigReader.getInt(Constants.ConfigKeys.BROWSER_WIDTH, Constants.BROWSER_WIDTH);
-    }
-
-    public static int getBrowserHeight() {
-        return ConfigReader.getInt(Constants.ConfigKeys.BROWSER_HEIGHT, Constants.BROWSER_HEIGHT);
-    }
-
-    public static boolean isRemote() {
-        return System.getProperty(PropertyKeys.REMOTE_URL) != null;
-    }
-
-    public static String getRemoteUrl() {
-        return System.getProperty(PropertyKeys.REMOTE_URL, Constants.Environment.DEFAULT_SELENIUM_HUB_URL);
     }
 }

@@ -18,11 +18,15 @@ public class MainPageOperations {
         this.mainPage = new MainPage(driver);
     }
 
+    public MainPageOperations(MainPage mainPage) {
+        this.mainPage = mainPage;
+    }
+
     @Step("Открытие главной страницы")
     public MainPageOperations open() {
         mainPage
                 .getDriver()
-                .get(Constants.Environment.BASE_URL + Constants.Endpoints.MAIN_PAGE);
+                .get(Constants.Environment.INNOWISE_URL + Constants.Endpoints.MAIN_PAGE);
         waitForPageReady();
         return this;
     }

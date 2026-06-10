@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Feature("AJAX Load More в поиске")
 @Tag("e2e")
 @DisplayName("E2E: Обработка ошибок AJAX через BrowserMob Proxy при поиске на странице")
-public class AjaxLoadMoreErrorTest extends BaseUITest {
+class AjaxLoadMoreErrorTest extends BaseUITest {
     private MainPageOperations mainPageOperations;
     private SearchPage searchPage;
 
@@ -58,7 +58,6 @@ public class AjaxLoadMoreErrorTest extends BaseUITest {
     @DisplayName("E2E: Обработка 400 ошибки AJAX")
     @Description("Проверка, что при 400 ошибке AJAX результаты поиска не подгружаются")
     void shouldHandleAjax400Error() {
-
         mainPageOperations
                 .openAndWait()
                 .performSearch(Constants.TestData.SEARCH_KEYWORD)

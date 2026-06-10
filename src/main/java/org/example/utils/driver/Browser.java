@@ -9,6 +9,8 @@ public enum Browser {
     EDGE,
     SAFARI;
 
+    private static final String UNSUPPORTED_BROWSER_S_SUPPORTED_S = "Unsupported browser: '%s'. Supported: [%s]";
+
     public static Browser fromString(String browserName) {
         if (browserName == null || browserName.isBlank()) {
             return CHROME;
@@ -24,18 +26,9 @@ public enum Browser {
                     .collect(Collectors.joining(", "));
 
             throw new IllegalArgumentException(
-                    String.format("Unsupported browser: '%s'. Supported: [%s]",
+                    String.format(UNSUPPORTED_BROWSER_S_SUPPORTED_S,
                             browserName, supported)
             );
-        }
-    }
-
-    public static boolean isSupported(String browserName) {
-        try {
-            fromString(browserName);
-            return true;
-        } catch (IllegalArgumentException e) {
-            return false;
         }
     }
 }

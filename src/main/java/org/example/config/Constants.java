@@ -8,52 +8,15 @@ public final class Constants {
         throw new UnsupportedOperationException(Constants.Errors.UTILITY_CLASS_INSTANTIATION);
     }
 
-    public static final Duration POLLING_INTERVAL = Duration.ofMillis(200);
+    public static final String ID = "id";
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
+    public static final String ROLE = "role";
+    public static final String TOKEN = "token";
 
-    // Browser
-    public static final String DEFAULT_BROWSER = "chrome";
-    public static final int BROWSER_WIDTH = 1920;
-    public static final int BROWSER_HEIGHT = 1080;
-
-    // Browser Arguments
-    public static final class BrowserArgs {
-        public static final String NO_SANDBOX = "--no-sandbox";
-        public static final String DISABLE_DEV_SHM = "--disable-dev-shm-usage";
-        public static final String DISABLE_GPU = "--disable-gpu";
-        public static final String DISABLE_EXTENSIONS = "--disable-extensions";
-        public static final String DISABLE_NOTIFICATIONS = "--disable-notifications";
-        public static final String DISABLE_INFO_BARS = "--disable-infobars";
-        public static final String HEADLESS_NEW = "--headless=new";
-        public static final String HEADLESS = "--headless";
-        public static final String REMOTE_ALLOW_ORIGINS = "--remote-allow-origins=*";
-
-        // CI-specific
-        public static final String DISABLE_WEB_SECURITY = "--disable-web-security";
-        public static final String ALLOW_INSECURE_CONTENT = "--allow-running-insecure-content";
-        public static final String NO_ZYGOTE = "--no-zygote";
-        public static final String DISABLE_SETUID_SANDBOX = "--disable-setuid-sandbox";
-        public static final String SINGLE_PROCESS = "--single-process";
-
-        // Window size format
-        public static final String WINDOW_SIZE = "--window-size=%d,%d";
-        public static final String WIDTH = "--width=%d";
-        public static final String HEIGHT = "--height=%d";
-
-        // Exclude switches
-        public static final String EXCLUDE_AUTOMATION_SWITCH = "enable-automation";
-    }
-
-    // Browser Preferences Keys
-    public static final class BrowserPrefs {
-        public static final String NOTIFICATIONS = "profile.default_content_setting_values.notifications";
-        public static final String CREDENTIALS_SERVICE = "credentials_enable_service";
-        public static final String PASSWORD_MANAGER = "password_manager_enabled";
-        // Firefox
-        public static final String WEB_NOTIFICATIONS = "dom.webnotifications.enabled";
-        public static final String PUSH_ENABLED = "dom.push.enabled";
-        public static final String DOWNLOAD_FOLDER_LIST = "browser.download.folderList";
-        public static final String NEVER_ASK_SAVE_TO_DISK = "browser.helperApps.neverAsk.saveToDisk";
-    }
+    public static final String INVALID_USERNAME = "INVALID_USERNAME";
+    public static final String INVALID_PASSWORD = "INVALID_PASSWORD";
+    public static final String EMPTY_STRING = "";
 
     public static final class Headers {
         public static final String ACCEPT = "accept";
@@ -64,14 +27,6 @@ public final class Constants {
 
     public static final class MimeTypes {
         public static final String APPLICATION_JSON_TEXT = "application/json, text/plain, */*";
-        public static final String APPLICATION_JSON = "application/json";
-        public static final String TEXT_HTML = "text/html";
-        public static final String OCTET_STREAM = "application/octet-stream";
-    }
-
-    public static final class SafariCaps {
-        public static final String TECHNOLOGY_PREVIEW = "technologyPreview";
-        public static final String AUTOMATIC_INSPECTION = "automaticInspection";
     }
 
     // Environment Detection
@@ -84,8 +39,8 @@ public final class Constants {
     }
 
     public static final class Environment {
-        public static final String BASE_URL = "https://innowise.com";
-        public static final String DEFAULT_SELENIUM_HUB_URL = "http://localhost:4444/wd/hub";
+        public static final String INNOWISE_URL = "https://innowise.com";
+        public static final String LOCALHOST_URL = "http://localhost:8081";
     }
 
     public static final class Endpoints {
@@ -93,6 +48,8 @@ public final class Constants {
         public static final String ABOUT_US = "/about-us/";
         public static final String ABOUT_US_RU = "/ru/about-us/";
         public static final String AJAX = "/wp-admin/admin-ajax.php";
+        public static final String LOGIN_PAGE_ENDPOINT = "/login";
+        public static final String REGISTRATION_ENDPOINT = "/registration";
     }
 
     public static final class Selectors {
@@ -116,11 +73,13 @@ public final class Constants {
         public static final String AJAX_EMPTY_RESPONSE = "{\"html\":\"\",\"meta\":{\"postcount\":0}}";
         public static final String SEARCH_PATTERN = "property=\"og:title\" content=\"You searched for : %s - Innowise\"";
 
-        // Ожидаемые тексты на странице поиска
         public static final String SEARCH_FIELD = "search-field";
         public static final String SEARCH_RESULT = "search-result";
         public static final String SEARCH_RESULTS_TEXT = "Search results";
         public static final String CONTENT_MASONRY = "content-masonry";
+
+        public static final String SQL_INJECTION = "' OR '1'='1";
+        public static final String XSS_SCRIPT = "<script>alert('xss')</script>";
     }
 
     public static final class Errors {
@@ -145,16 +104,12 @@ public final class Constants {
         public static final String CONTENT_HEADERS_MISMATCH = "Ни один из %d заголовков не содержит '%s': %s";
         public static final String SEARCH_RESULTS_SHOULD_BE_EMPTY = "Результаты поиска не должны отображаться";
         public static final String FOOTER_LINK_NOT_FOUND = "Ссылка не найдена в футере: %s";
-        public static final String PROXY_NOT_STARTED = "Proxy is not started. Call ProxyManager.start() first.";
+        public static final String DB_CONNECTION_ERROR = "Не удалось подключиться к базе данных";
+        public static final String DB_QUERY_ERROR = "Ошибка выполнения запроса к базе данных";
 
         // 404 Page
         public static final String TITLE_404 = "Страница не найдена - Innowise";
         public static final String CONTENT_404_EN = "The page you were looking for couldn't be found";
-    }
-
-    public static final class StoreKeys {
-        public static final String SCREENSHOT = "screenshot";
-        public static final String CLASS_LEVEL_DRIVER = "class-level-driver";
     }
 
     public static final class Allure {
@@ -164,7 +119,6 @@ public final class Constants {
         public static final String MIME_HTML = "text/html";
 
         public static final String EXT_PNG = "png";
-
     }
 
     public static final class Paths {
@@ -187,7 +141,6 @@ public final class Constants {
         public static final String SCROLL_POSITION = "return window.scrollY;";
         public static final String WINDOW_INNER_HEIGHT = "return window.innerHeight;";
         public static final String BODY_SCROLL_HEIGHT = "return document.body.scrollHeight;";
-
     }
 
     public static final class Api {
@@ -212,7 +165,7 @@ public final class Constants {
         public static final String SEARCH_RESULTS_SHOULD_BE_DISPLAYED = "Результаты поиска должны отображаться";
         public static final String SEARCH_INPUT_SHOULD_BE_DISPLAYED = "Поле поиска должно отображаться после клика на иконку";
         public static final String SEARCH_CONTAINER_SHOULD_BE_DISPLAYED = "Контейнер поиска должен отображаться";
-        public static final String AJAX_INTERCEPTED = "✅ BrowserMob Proxy перехватил AJAX";
+        public static final String AJAX_INTERCEPTED = "BrowserMob Proxy перехватил AJAX";
         public static final String FOOTER_LINK_TEXT_MISMATCH = "Ожидался текст '%s' для ссылки '%s'";
         public static final String HEADER_SHOULD_BE_VISIBLE_AT_START = "Хедер должен быть виден в начале";
         public static final String HEADER_SHOULD_BE_VISIBLE_AFTER_SCROLL = "Хедер должен быть виден после скролла";
@@ -236,17 +189,19 @@ public final class Constants {
         public static final String TIMEOUT_SCRIPT = "timeout.script";
         public static final String TIMEOUT_POLLING = "timeout.polling";
 
-        // Environment
-        public static final String BASE_URL = "base.url";
-        public static final String HUB_URL = "hub.url";
-        public static final String REMOTE = "remote";
-
         // Screenshots
         public static final String SCREENSHOTS_ENABLED = "screenshots.enabled";
         public static final String SCREENSHOTS_DIR = "screenshots.dir";
 
-        // Debug
-        public static final String HIGHLIGHT_ENABLED = "highlight.enabled";
-        public static final String DEBUG_MODE = "debug.mode";
+        public static final String INNOWISE_URL = "innowise.url";
+        public static final String LOCALHOST_URL = "localhost.url";
+    }
+
+    public static final class Db {
+        public static final String HOST = "localhost";
+        public static final String PORT = "5432";
+        public static final String NAME = "usr";
+        public static final String USER = "postgres";
+        public static final String PASSWORD = "123";
     }
 }

@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Feature("Поиск")
 @Tag("e2e")
 @DisplayName("E2E: Поиск по сайту")
-public class SearchE2ETest extends BaseUITest {
+class SearchE2ETest extends BaseUITest {
     private MainPageOperations mainPageOperations;
     private SearchPageOperations searchPageOperations;
     private SearchPage searchPage;
@@ -33,7 +33,7 @@ public class SearchE2ETest extends BaseUITest {
     @Story("Успешный поиск")
     @DisplayName("E2E: Успешный поиск с валидным запросом")
     @Description("Полный сценарий поиска от главной страницы до результатов")
-    public void shouldFindResultsForValidSearchQuery() {
+    void shouldFindResultsForValidSearchQuery() {
         mainPageOperations
                 .openAndWait()
                 .performSearch(Constants.TestData.SEARCH_KEYWORD)
@@ -53,7 +53,7 @@ public class SearchE2ETest extends BaseUITest {
     @Story("Негативный сценарий")
     @DisplayName("E2E: Поиск с опечаткой")
     @Description("Проверка поведения системы при поиске несуществующего слова")
-    public void shouldHandleTypoInSearchQuery() {
+    void shouldHandleTypoInSearchQuery() {
         mainPageOperations
                 .openAndWait()
                 .performSearch(Constants.TestData.SEARCH_KEYWORD_TYPO);

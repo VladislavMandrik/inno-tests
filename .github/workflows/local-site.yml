@@ -1,4 +1,4 @@
-name: Java Maven Tests with Allure
+name: Auth API Tests
 
 on:
   push:
@@ -8,35 +8,31 @@ on:
   workflow_dispatch:
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: maven
-
-      - name: Checkstyle
-        run: mvn checkstyle:check --batch-mode || true
-
-      - name: PMD
-        run: mvn pmd:check --batch-mode || true
-
   test:
-    needs: lint
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: usr
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: 123
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     env:
       ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
       ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
       USER_USERNAME: ${{ secrets.USER_USERNAME }}
       USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
+
     steps:
       - uses: actions/checkout@v4
-
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -44,15 +40,17 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Setup Chrome
+      - name: Clone and start site
         run: |
-          wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo apt-get install -y -qq ./google-chrome-stable_current_amd64.deb
+          git clone https://github.com/VladislavMandrik/auth-service.git ../auth-service
+          cd ../auth-service
+          mvn spring-boot:run -Dspring-boot.run.profiles=test &
+          sleep 30
 
-      - name: Run tests
+      - name: Run AuthApiTests
         id: tests
         run: |
-          mvn clean test -Dheadless=true -Dtest='!AuthApiTests, !RegistrationApiTests' --batch-mode | tee test-output.log
+          mvn clean test -Dtest=AuthApiTests,RegistrationApiTests -Dbase.url=http://localhost:8081 --batch-mode | tee test-output.log
           TOTAL=$(grep -oP 'Tests run: \K\d+' test-output.log | tail -1)
           FAILURES=$(grep -oP 'Failures: \K\d+' test-output.log | tail -1)
           ERRORS=$(grep -oP 'Errors: \K\d+' test-output.log | tail -1)
@@ -68,12 +66,11 @@ jobs:
       - name: Generate Allure Report
         if: always()
         run: mvn allure:report --batch-mode
-
       - name: Upload Allure Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: allure-report
+          name: allure-report-auth
           path: target/allure-report/
           retention-days: 7
 
@@ -85,12 +82,7 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: html
           message: |
-            🔔 <b>Тесты завершены!</b>
-            
-            📋 <b>Проект:</b> ${{ github.repository }}
-            🌿 <b>Ветка:</b> ${{ github.ref_name }}
-            👤 <b>Автор:</b> ${{ github.actor }}
-            📊 <b>Статус:</b> ${{ job.status }}
+            🔔 <b>Auth API Тесты завершены!</b>
             
             🧪 <b>Результаты тестов:</b>
             📊 Всего: ${{ steps.tests.outputs.tests_total }}
@@ -99,10 +91,8 @@ jobs:
             ⚠️ Ошибок: ${{ steps.tests.outputs.tests_errors }}
             ⏭️ Пропущено: ${{ steps.tests.outputs.tests_skipped }}
             
-            📝 <b>Коммит:</b> ${{ github.event.head_commit.message }}
-            
             <a href="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}">📋 Логи сборки</a>
-            <a href="https://vladislavmandrik.github.io/inno-tests/main-tests/">📈 Allure-отчёт</a>
+            <a href="https://vladislavmandrik.github.io/inno-tests/auth-tests/">📈 Allure-отчёт</a>
 
   deploy-report:
     needs: test
@@ -112,7 +102,7 @@ jobs:
       - name: Download Allure Report
         uses: actions/download-artifact@v4
         with:
-          name: allure-report
+          name: allure-report-auth
           path: allure-report
 
       - name: Deploy to GitHub Pages
@@ -120,4 +110,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./allure-report
-          destination_dir: main-tests
+          destination_dir: auth-tests

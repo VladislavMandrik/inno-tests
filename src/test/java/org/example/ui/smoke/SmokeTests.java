@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Tag("smoke")
 @Tag("e2e")
 @DisplayName("Smoke: Критические проверки")
-public class SmokeTests extends BaseUITest {
+class SmokeTests extends BaseUITest {
     private MainPageOperations mainPageOperations;
     private SearchPageOperations searchPageOperations;
     private MainPage mainPage;
@@ -31,7 +31,7 @@ public class SmokeTests extends BaseUITest {
     @Story("Главная страница")
     @DisplayName("Smoke: Главная страница загружается")
     @Description("Проверка доступности главной страницы")
-    public void shouldLoadMainPage() {
+    void shouldLoadMainPage() {
         mainPageOperations.openAndWait();
         assertTrue(mainPage.isLogoDisplayed(), Constants.Messages.LOGO_SHOULD_BE_DISPLAYED);
     }
@@ -40,7 +40,7 @@ public class SmokeTests extends BaseUITest {
     @Story("Поиск")
     @DisplayName("Smoke: Быстрый поиск работает")
     @Description("Smoke проверка поиска")
-    public void shouldPerformQuickSearch() {
+    void shouldPerformQuickSearch() {
         mainPageOperations
                 .openAndWait()
                 .performSearch(Constants.TestData.SEARCH_KEYWORD);
