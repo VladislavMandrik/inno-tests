@@ -10,6 +10,12 @@ public final class Constants {
 
     public static final Duration POLLING_INTERVAL = Duration.ofMillis(200);
 
+    public static final String ID = "id";
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
+    public static final String ROLE = "role";
+    public static final String TOKEN = "token";
+
     public static final String INVALID_USERNAME = "INVALID_USERNAME";
     public static final String INVALID_PASSWORD = "INVALID_PASSWORD";
     public static final String EMPTY_STRING = "";
@@ -46,11 +52,7 @@ public final class Constants {
         public static final String ABOUT_US_RU = "/ru/about-us/";
         public static final String AJAX = "/wp-admin/admin-ajax.php";
         public static final String LOGIN_PAGE_ENDPOINT = "/login";
-    }
-
-    public static final class Auth {
-        public static final String USERNAME = "username";
-        public static final String PASSWORD = "password";
+        public static final String REGISTRATION_ENDPOINT = "/registration";
     }
 
     public static final class Selectors {
@@ -105,7 +107,8 @@ public final class Constants {
         public static final String CONTENT_HEADERS_MISMATCH = "Ни один из %d заголовков не содержит '%s': %s";
         public static final String SEARCH_RESULTS_SHOULD_BE_EMPTY = "Результаты поиска не должны отображаться";
         public static final String FOOTER_LINK_NOT_FOUND = "Ссылка не найдена в футере: %s";
-        public static final String PROXY_NOT_STARTED = "Proxy is not started. Call ProxyManager.start() first.";
+        public static final String DB_CONNECTION_ERROR = "Не удалось подключиться к базе данных";
+        public static final String DB_QUERY_ERROR = "Ошибка выполнения запроса к базе данных";
 
         // 404 Page
         public static final String TITLE_404 = "Страница не найдена - Innowise";
@@ -192,5 +195,13 @@ public final class Constants {
         // Screenshots
         public static final String SCREENSHOTS_ENABLED = "screenshots.enabled";
         public static final String SCREENSHOTS_DIR = "screenshots.dir";
+    }
+
+    public static final class Db {
+        public static final String HOST = "localhost";
+        public static final String PORT = "5433";
+        public static final String NAME = "usr";
+        public static final String USER = "postgres";
+        public static final String PASSWORD = "123";
     }
 }

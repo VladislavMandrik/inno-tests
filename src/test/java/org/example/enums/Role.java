@@ -6,6 +6,10 @@ public enum Role {
     ADMIN,
     USER;
 
+    public String getRoleName() {
+        return "ROLE_" + name();
+    }
+
     public String getUsername() {
         return EnvConfig.get(name() + "_USERNAME");
     }

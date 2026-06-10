@@ -11,6 +11,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
+import static org.example.config.Constants.TOKEN;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -20,8 +21,6 @@ import static org.hamcrest.Matchers.*;
 @Tag("smoke")
 @DisplayName("API: Проверка аутентификации")
 class AuthApiTests extends BaseApiTest {
-    private static final String TOKEN = "token";
-
     @ParameterizedTest(name = "Пользователь: {0}")
     @EnumSource(Role.class)
     @Story("Страница авторизации")
