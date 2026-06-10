@@ -24,11 +24,13 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+
     env:
       ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
       ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
       USER_USERNAME: ${{ secrets.USER_USERNAME }}
       USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
+
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 17
@@ -37,12 +39,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
+
       - name: Clone and start site
         run: |
           git clone https://github.com/VladislavMandrik/auth-service.git ../auth-service
           cd ../auth-service
           mvn spring-boot:run -Dspring-boot.run.profiles=test &
           sleep 30
+
       - name: Run AuthApiTests
         id: tests
         run: |
@@ -52,11 +56,13 @@ jobs:
           ERRORS=$(grep -oP 'Errors: \K\d+' test-output.log | tail -1)
           SKIPPED=$(grep -oP 'Skipped: \K\d+' test-output.log | tail -1)
           PASSED=$((TOTAL - FAILURES - ERRORS - SKIPPED))
+          
           echo "tests_total=$TOTAL" >> $GITHUB_OUTPUT
           echo "tests_passed=$PASSED" >> $GITHUB_OUTPUT
           echo "tests_failed=$FAILURES" >> $GITHUB_OUTPUT
           echo "tests_errors=$ERRORS" >> $GITHUB_OUTPUT
           echo "tests_skipped=$SKIPPED" >> $GITHUB_OUTPUT
+
       - name: Generate Allure Report
         if: always()
         run: mvn allure:report --batch-mode
@@ -67,6 +73,7 @@ jobs:
           name: allure-report-auth
           path: target/allure-report/
           retention-days: 7
+
       - name: Send Telegram notification
         if: always()
         uses: appleboy/telegram-action@master
@@ -76,12 +83,14 @@ jobs:
           format: html
           message: |
             🔔 <b>Auth API Тесты завершены!</b>
+            
             🧪 <b>Результаты тестов:</b>
             📊 Всего: ${{ steps.tests.outputs.tests_total }}
             ✅ Прошло: ${{ steps.tests.outputs.tests_passed }}
             ❌ Упало: ${{ steps.tests.outputs.tests_failed }}
             ⚠️ Ошибок: ${{ steps.tests.outputs.tests_errors }}
             ⏭️ Пропущено: ${{ steps.tests.outputs.tests_skipped }}
+            
             <a href="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}">📋 Логи сборки</a>
             <a href="https://vladislavmandrik.github.io/inno-tests/auth-tests/">📈 Allure-отчёт</a>
 
@@ -95,6 +104,7 @@ jobs:
         with:
           name: allure-report-auth
           path: allure-report
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:

@@ -199,7 +199,7 @@ public final class Constants {
 
     public static final class Db {
         public static final String HOST = "localhost";
-        public static final String PORT = "5433";
+        public static final String PORT = "5432";
         public static final String NAME = "usr";
         public static final String USER = "postgres";
         public static final String PASSWORD = "123";
