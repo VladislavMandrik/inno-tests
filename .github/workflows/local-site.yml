@@ -68,6 +68,14 @@ jobs:
         if: always()
         run: mvn allure:report --batch-mode
 
+      - name: Upload Allure Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report-auth
+          path: target/allure-report/
+          retention-days: 7
+
       - name: Send Telegram notification
         if: always()
         uses: appleboy/telegram-action@master
@@ -86,3 +94,22 @@ jobs:
             ⏭️ Пропущено: ${{ steps.tests.outputs.tests_skipped }}
             
             <a href="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}">📋 Логи сборки</a>
+            <a href="https://vladislavmandrik.github.io/inno-tests/auth-tests/">📈 Allure-отчёт</a>
+
+  deploy-report:
+    needs: test
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Allure Report
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-report-auth
+          path: allure-report
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./allure-report
+          destination_dir: auth-tests

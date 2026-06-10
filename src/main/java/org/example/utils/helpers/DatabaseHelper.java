@@ -14,7 +14,7 @@ public final class DatabaseHelper {
     private static final String DB_URL = "jdbc:postgresql://%s:%s/%s";
     private static final String USER_GET_QUERY = "SELECT id, username, password, role FROM usr WHERE username = ?";
     private static final String DELETE_USER_QUERY = "DELETE FROM usr WHERE username = ?";
-    private static final String DELETE_LOG_MESSAGE = "User '{}' deleted from database";
+    private static final String DELETE_LOG_MESSAGE = "Пользователь '{}' удален из БД";
 
     private DatabaseHelper() {
         throw new UnsupportedOperationException(Constants.Errors.UTILITY_CLASS_INSTANTIATION);

@@ -16,7 +16,8 @@ public class PageActionsHelper {
     }
 
     public static void init(WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, DriverConfig.getExplicitWaitTimeout(), Constants.POLLING_INTERVAL);
+        WebDriverWait wait = new WebDriverWait
+                (driver, DriverConfig.getExplicitWaitTimeout(), DriverConfig.getPollingInterval());
         wait.ignoring(StaleElementReferenceException.class)
                 .ignoring(NoSuchElementException.class);
         waitThreadLocal.set(wait);

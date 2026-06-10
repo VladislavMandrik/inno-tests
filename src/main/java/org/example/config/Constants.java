@@ -8,8 +8,6 @@ public final class Constants {
         throw new UnsupportedOperationException(Constants.Errors.UTILITY_CLASS_INSTANTIATION);
     }
 
-    public static final Duration POLLING_INTERVAL = Duration.ofMillis(200);
-
     public static final String ID = "id";
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
@@ -43,7 +41,6 @@ public final class Constants {
     public static final class Environment {
         public static final String INNOWISE_URL = "https://innowise.com";
         public static final String LOCALHOST_URL = "http://localhost:8081";
-        public static final String DEFAULT_SELENIUM_HUB_URL = "http://localhost:4444/wd/hub";
     }
 
     public static final class Endpoints {
@@ -195,6 +192,9 @@ public final class Constants {
         // Screenshots
         public static final String SCREENSHOTS_ENABLED = "screenshots.enabled";
         public static final String SCREENSHOTS_DIR = "screenshots.dir";
+
+        public static final String INNOWISE_URL = "innowise.url";
+        public static final String LOCALHOST_URL = "localhost.url";
     }
 
     public static final class Db {

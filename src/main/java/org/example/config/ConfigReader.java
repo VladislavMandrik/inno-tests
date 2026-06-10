@@ -15,7 +15,7 @@ public final class ConfigReader {
     private static final String ENV_PROFILE = "env";
     private static final String TEST_ENV = "TEST_ENV";
     private static final String PROFILE_CI = "ci";
-    private static final String CANNOT_LOAD_CONFIG = "⚠ Cannot load config: ";
+    private static final String CANNOT_LOAD_CONFIG = "Конфиг не загружен: ";
 
     static {
         loadProperties(CONFIG_PATH);
@@ -39,11 +39,8 @@ public final class ConfigReader {
 
     private static void loadProfileProperties() {
         String profile = System.getProperty(ENV_PROFILE, System.getenv(TEST_ENV));
-
         if (PROFILE_CI.equalsIgnoreCase(profile)) {
             loadProperties(CI_CONFIG_PATH);
-        } else {
-            loadProperties(LOCAL_CONFIG_PATH);
         }
     }
 
@@ -69,5 +66,4 @@ public final class ConfigReader {
         String value = properties.getProperty(key);
         return value != null ? Boolean.parseBoolean(value) : defaultValue;
     }
-
 }

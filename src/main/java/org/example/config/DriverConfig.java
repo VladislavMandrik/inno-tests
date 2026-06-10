@@ -24,6 +24,10 @@ public final class DriverConfig {
         return Duration.ofSeconds(ConfigReader.getInt(Constants.ConfigKeys.TIMEOUT_SCRIPT, 20));
     }
 
+    public static Duration getPollingInterval() {
+        return Duration.ofMillis(ConfigReader.getInt(Constants.ConfigKeys.TIMEOUT_POLLING, 200));
+    }
+
     public static PageLoadStrategy getPageLoadStrategy() {
         return PageLoadStrategy.EAGER;
     }
